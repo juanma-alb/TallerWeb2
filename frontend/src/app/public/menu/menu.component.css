@@ -1,0 +1,84 @@
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: var(--color-primario) ;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.navbar-logo .logo-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-acento);
+  text-decoration: none;  
+  font-family: 'Bebas Neue', sans-serif;
+}
+
+.navbar-nav {
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.nav-link {
+  padding: 8px 16px;
+  color: var(--color-acento);
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s ease;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.1rem;
+}
+
+.nav-link:hover {
+  background-color: var(--color-acento);
+  color: var(--color-primario);
+}
+
+.user-name {
+  color: var(--color-secundario);
+  font-weight: 600;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.1rem;
+  background-color: var(--color-danger);
+  padding: .1rem .3rem;
+  border-radius: .2rem;
+}
+
+
+.cart-btn{
+  background-color: var(--color-acento);
+  border: none;
+  color: var(--color-primario);
+  font-family: 'Bebas Neue', sans-serif;
+  padding: 0rem .2rem;
+
+}
+
+.cart-btn img{
+  width: 1.5rem;
+  height: auto;
+}
+
+::ng-deep .p-drawer-header {
+  background-color: var(--color-acento);
+  color: var(--color-primario);
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 1rem;
+}

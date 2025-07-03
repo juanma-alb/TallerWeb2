@@ -1,0 +1,75 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id        Int    @id @default(autoincrement())
+  email     String @unique
+  password  String
+  firstName String
+  lastName  String
+  address   String
+
+  createdAt DateTime @default(now()) // Guarda la fecha y hora en la que se creó el registro.
+  updatedAt DateTime @updatedAt // Guarda la fecha y hora en la que se actualizó por última vez el registro.
+}
+
+model Marca {
+  id         Int         @id @default(autoincrement())
+  nombre     String
+  zapatillas Zapatilla[]
+}
+
+model Color {
+  id         Int         @id @default(autoincrement())
+  nombre     String
+  zapatillas Zapatilla[]
+}
+
+model Talle {
+  id     Int     @id @default(autoincrement())
+  numero Float
+  stock  Stock[]
+}
+
+model Zapatilla {
+  id          Int      @id @default(autoincrement())
+  nombre      String
+  marcaId     Int
+  colorId     Int
+  sexo        Sexo
+  precio      Decimal   @db.Decimal(10,2)
+  descripcion String? 
+  imagen      String?
+
+  marca       Marca     @relation(fields: [marcaId], references: [id])
+  color       Color     @relation(fields: [colorId], references: [id])
+  stock       Stock[]
+}
+
+model Stock {
+  id           Int        @id @default(autoincrement())
+  zapatillaId  Int
+  talleId      Int
+  cantidad     Int
+  activo       Boolean     @default(true)
+
+  zapatilla    Zapatilla  @relation(fields: [zapatillaId], references: [id])
+  talle        Talle      @relation(fields: [talleId], references: [id])
+}
+
+enum Sexo {
+  hombre
+  mujer
+  niño
+}
+ 
+// npx prisma db push --> Sincroniza el esquema directamente con la base de datos (no crea migraciones)
+// npx prisma migrate dev --name init  --> Crea una migración con SQL, aplica cambios y guarda historial

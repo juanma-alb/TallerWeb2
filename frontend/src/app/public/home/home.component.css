@@ -1,0 +1,80 @@
+.bg-home{
+  background-color: var(--color-primario);
+}
+
+.benefits {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem; 
+  padding: 4rem 1rem 2rem 1rem;
+  background-color: var(--color-acento);
+  text-align: center;
+  flex-wrap: wrap;
+}
+
+.benefit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 200px;
+}
+
+.benefit i {
+  font-size: 2.5rem;
+  color: var(--color-primario); 
+  margin-bottom: 0.5rem;
+}
+
+.benefit p {
+  font-size: 1rem;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 500;
+  font-weight: bold;
+  color: var(--color-primario);
+}
+
+.icon{
+  width: 3rem;
+  height: 3rem;
+}
+
+.categorias{
+  padding: 5rem 0rem;
+  display: flex; 
+  justify-content: center;
+  gap: 4rem;
+}
+
+.categorias img{
+  width: 22rem;
+  height: 32rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.categorias img:hover {
+  transform: scale(1.05); 
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); 
+}
+
+.destacados{
+  padding: 1rem 0rem;
+}
+
+.container-img-dest{
+  display: flex;
+  justify-content: center;
+  /* justify-content: flex-start;   */
+  /* flex-wrap: wrap; */
+}
+
+.destacados img{
+  width: 30rem;
+  height: 30rem;
+}
+
+.destacados h1{
+  color: var(--color-acento);
+  font-family: 'Bebas Neue', sans-serif;  
+  text-align: center;
+}

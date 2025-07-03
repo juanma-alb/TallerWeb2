@@ -1,0 +1,86 @@
+<section class="bg-home">
+    <p-galleria
+      [value]="images"
+      [showItemNavigators]="true"
+      [showThumbnails]="false"
+      [showIndicators]="true"
+      [showItemNavigatorsOnHover]="true"
+      [circular]="true"
+      [responsiveOptions]="responsiveOptions"
+      [containerStyle]="{ 'max-width': '100%' }"
+    >
+      <ng-template #item let-item>
+        <a [routerLink]="['/producto/ver-productos']">
+          <img [src]="item.itemImageSrc" style="width: 100%; display: block;" />
+        </a>
+      </ng-template>
+      <ng-template #thumbnail let-item>
+        <img [src]="item.thumbnailImageSrc" style="display: block;" />
+      </ng-template>
+    </p-galleria>
+
+    <section class="benefits">
+      <div class="benefit">
+        <img [src]="sendIcon" alt="Envios a todo el pais" class="icon">
+        <p class="mt-3">Envíos a todo el país</p>
+      </div>
+      <div class="benefit">
+        <img [src]="pagoIcon" alt="Envios a todo el pais" class="icon">
+        <p class="mt-3">3 cuotas sin interés</p>
+      </div>
+      <div class="benefit">
+        <img [src]="segurityIcon" alt="Envios a todo el pais" class="icon">
+        <p class="mt-3">Compra 100% segura</p>
+      </div>
+    </section>
+
+    <div class="categorias">
+      <div>
+        <a [routerLink]="['/']" class="cursor-pointer"><img [src]="hombre" alt=""></a>
+      </div>
+
+      <div>
+         <a [routerLink]="['/']" class="cursor-pointer"><img [src]="mujer" alt=""></a>
+      </div>
+
+      <div>        
+         <a [routerLink]="['/']" class="cursor-pointer"><img [src]="ninio" alt=""></a>
+      </div>
+    </div>
+
+    <div class="destacados">
+      <h1>Destacados de la Semana</h1>
+
+      <div class="container-img-dest">
+        <div><a [routerLink]="['/']" class="cursor-pointer img-destacado"><img [src]="descatacado1" alt=""></a></div>
+        <div><a [routerLink]="['/']" class="cursor-pointer img-destacado"><img [src]="descatacado2" alt=""></a></div>
+        <div><a [routerLink]="['/']" class="cursor-pointer img-destacado"><img [src]="descatacado3" alt=""></a></div>
+      </div>
+       
+      
+      <!-- <div class="container-img-dest">
+        <div>
+          <p-card [style]="{ width: '25rem', overflow: 'hidden' }">
+              <ng-template #header>
+                  <img alt="Card" class="w-full" src="https://primefaces.org/cdn/primeng/images/card-ng.jpg" />
+              </ng-template>
+              <ng-template #title> Advanced Card </ng-template>
+              <ng-template #subtitle> Card subtitle </ng-template>
+              <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt
+                  quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!
+              </p>
+              <ng-template #footer>
+                  <div class="flex gap-4 mt-1">
+                      <p-button label="Comprar" class="w-full" styleClass="w-full" />
+                  </div>
+              </ng-template>
+          </p-card>
+        </div> 
+      </div>-->
+
+    </div>
+    
+
+
+</section>

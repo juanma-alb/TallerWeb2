@@ -1,0 +1,122 @@
+.btn-disabled {
+  background-color: #e0e0e0 !important; 
+  color: #6c757d !important;            
+  border: none;
+  cursor: not-allowed;
+}
+
+.btn-enabled {
+  background-color: #198754 !important; 
+  color: white !important;
+  border: none;
+  cursor: pointer;
+}
+
+.text-info{
+  flex: 1; 
+}
+
+.text-info, h1{
+  font-family: 'Bebas Neue', sans-serif;
+  color: var(--color-secundario);
+}
+
+.text-info, p{
+  color: var(--color-secundario);
+}
+
+.form-registro{
+  flex: 1;
+   max-width: 550px; 
+   background: var(--color-acento); 
+   padding: 2rem 3rem; 
+   border-radius: 10px; 
+   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.col.m-0 > .texto-info,
+.col.m-0 > form {
+  flex: 1 1 45%; 
+  max-width: 500px;
+  box-sizing: border-box;
+}
+
+.bg-container {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  gap: 5rem
+} 
+
+.bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.bg-overlay {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); 
+  z-index: -1;
+}
+    
+
+
+input[pInputText] {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid var(--color-primario);
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+
+input[pInputText]:focus {
+  border-color: #0d6efd;
+  outline: none;
+  box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  font-family: 'Bebas Neue', sans-serif;
+  color: var(--color-primario);
+  display: block;
+}
+
+small.text-danger {
+  margin-left: 4px;
+  font-size: 0.85rem;
+}
+
+.row.mt-3 {
+  display: flex;
+  justify-content: center;
+}
+
+button.p-button-success {
+  width: 100%;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-form{
+  background-color: var(--color-primario);
+  border: none;
+}

@@ -1,0 +1,76 @@
+<nav class="navbar-container">
+  <!-- Logo -->
+  <div class="navbar-logo">
+    <a [routerLink]="['/']" class="logo-text">KIKSTORM</a>
+  </div>
+
+
+  <!-- Menú de navegación -->
+  <ul class="navbar-nav">
+    <!-- Si hay usuario logueado -->
+    <ng-container *ngIf="usuarioLogueado(); else noLogueado">
+      <li class="nav-item">
+        <a
+          [routerLink]="['/producto/ver-productos']"
+          class="nav-link"
+          routerLinkActive="active"
+        >Ver Productos</a>
+      </li>
+
+      <li class="nav-item">
+        <!-- <a
+          [routerLink]="['/producto/ver-productos']"
+          class="nav-link"
+          routerLinkActive="active"
+        >
+          <img [src]="cart" class="cart cart-default" alt="">
+          <img [src]="cart1" class="cart cart-hover" alt="">
+      </a> -->
+        <button (click)="visible2 = true" class="cart-btn">
+                    <img [src]="cart1" class="cart cart-hover" alt="">
+
+        </button>
+
+        <p-drawer header="Tu carrito" [(visible)]="visible2" position="right">
+          <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+          et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat.
+          </p>
+        </p-drawer>
+
+      </li>
+
+      <li class="nav-item user-name">
+        {{ usuarioLogueado()?.firstName }} {{ usuarioLogueado()?.lastName }}
+      </li>
+      
+    </ng-container>
+
+    <!-- Si NO hay usuario logueado -->
+    <ng-template #noLogueado>
+      <li class="nav-item">
+        <a
+          [routerLink]="['/usuario/signin']"
+          class="nav-link"
+          routerLinkActive="active"
+        >Iniciar Sesión</a>
+      </li>
+      <li class="nav-item">
+        <a
+          [routerLink]="['/usuario/signup']"
+          class="nav-link"
+          routerLinkActive="active"
+        >Registrarme</a>
+      </li>
+      <li class="nav-item">
+        <a
+          [routerLink]="['/producto/ver-productos']"
+          class="nav-link"
+          routerLinkActive="active"
+        >Ver Productos</a>
+      </li>
+    </ng-template>
+  </ul>
+</nav>
+<router-outlet></router-outlet>
