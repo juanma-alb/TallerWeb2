@@ -45,6 +45,10 @@
         {{ usuarioLogueado()?.firstName }} {{ usuarioLogueado()?.lastName }}
       </li>
       
+      <li class="nav-item">
+      <button class="nav-link btn-logout" (click)="logout()">Cerrar sesión</button>
+      </li>
+      
     </ng-container>
 
     <!-- Si NO hay usuario logueado -->

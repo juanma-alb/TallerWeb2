@@ -29,11 +29,16 @@ export class SigninComponent implements OnInit {
   constructor(private fb: FormBuilder, private usuarioService: UsuarioService) {}
 
   ngOnInit() {
-    this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
-    });
+  if (this.authService.token) {
+    this.router.navigate(['/']);
+    return;
   }
+
+  this.form = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required]],
+  });
+}
 
   iniciarSesion() {
     if (this.form.invalid) {

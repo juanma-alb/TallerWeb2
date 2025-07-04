@@ -1,33 +1,38 @@
-import { Component, effect, inject, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
-import { RouterOutlet } from '@angular/router';
-import { DrawerModule } from 'primeng/drawer';
+// src/app/modules/usuario/components/menu/menu.component.ts
+import { Component, effect, inject } from '@angular/core';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { NgIf } from '@angular/common';
-import { AuthUsuarioService } from '../../api/services/usuario/auth-usuario.service';
+import { DrawerModule } from 'primeng/drawer';
+import { ButtonModule } from 'primeng/button';
 
+import { AuthUsuarioService } from '../../api/services/usuario/auth-usuario.service';
 
 @Component({
   selector: 'app-menu',
-  imports: [RouterLink, ButtonModule, RouterOutlet, NgIf,DrawerModule],
+  standalone: true,
+  imports: [RouterLink, RouterOutlet, NgIf, DrawerModule, ButtonModule],
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css']
+  styleUrls: ['./menu.component.css'],
 })
-export class MenuComponent  implements OnInit{
+export class MenuComponent {
+  cart  = '/img/cart-1.svg';
+  cart1 = '/img/cart.svg';
+  visible2 = false;
 
-  cart: string= '/img/cart-1.svg'
-  cart1: string= '/img/cart.svg'
-  visible2: boolean = false;
-  
-private authService = inject(AuthUsuarioService);
+  private auth   = inject(AuthUsuarioService);
+  private router = inject(Router);
 
-  usuarioLogueado = this.authService.usuario;
+  /** signal con el usuario o null */
+  usuarioLogueado = this.auth.usuario;
 
-   private usuarioEffect = effect(() => {
+  /** efecto solo para debug */
+  private usuarioEffect = effect(() => {
     console.log('Usuario:', this.usuarioLogueado());
-  })
-  
-  ngOnInit(): void {
-   
+  });
+
+  /** cierra sesión y redirige al home */
+  logout(): void {
+    this.auth.logout();
+    this.router.navigate(['/']);
   }
 }
