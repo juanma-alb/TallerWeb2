@@ -10,16 +10,27 @@ datasource db {
 }
 
 model Usuario {
-  id        Int    @id @default(autoincrement())
-  email     String @unique
-  password  String
-  firstName String
-  lastName  String
-  address   String
+  id              Int       @id @default(autoincrement())
+  email           String    @unique
+  passwordHash    String    // <— renombrado
+  firstName       String
+  lastName        String
+  address         String?
+  role            Role      @default(USER)
 
-  createdAt DateTime @default(now()) // Guarda la fecha y hora en la que se creó el registro.
-  updatedAt DateTime @updatedAt // Guarda la fecha y hora en la que se actualizó por última vez el registro.
+  // Recupero de contraseña
+  resetToken      String?   @unique
+  resetTokenExp   DateTime?
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 }
+
+enum Role {
+  USER
+  ADMIN
+}
+
 
 model Marca {
   id         Int         @id @default(autoincrement())
