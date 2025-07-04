@@ -7,12 +7,21 @@ import { NgIf } from '@angular/common';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';          
 import { AuthUsuarioService } from '../../../../api/services/usuario/auth-usuario.service';
 
 @Component({
   selector: 'app-signin',
-  imports: [ReactiveFormsModule, InputTextModule, SelectModule, ToastModule, NgIf, ButtonModule],
+  standalone: true,                                            
+  imports: [
+    RouterLink,                                                
+    ReactiveFormsModule,
+    InputTextModule,
+    SelectModule,
+    ToastModule,
+    NgIf,
+    ButtonModule
+  ],
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.css'],
   providers: [MessageService],
@@ -20,50 +29,45 @@ import { AuthUsuarioService } from '../../../../api/services/usuario/auth-usuari
 export class SigninComponent implements OnInit {
 
   messageService = inject(MessageService);
-  router= inject(Router)
-  authService= inject(AuthUsuarioService)
+  router   = inject(Router);
+  authService = inject(AuthUsuarioService);
   form!: FormGroup;
-  bgImg: string = '/img/bg-jordan.jpg';
-
+  bgImg = '/img/bg-jordan.jpg';
 
   constructor(private fb: FormBuilder, private usuarioService: UsuarioService) {}
 
   ngOnInit() {
-  if (this.authService.token) {
-    this.router.navigate(['/']);
-    return;
-  }
+    if (this.authService.token) {
+      this.router.navigate(['/']);
+      return;
+    }
 
-  this.form = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]],
-  });
-}
+    this.form = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+    });
+  }
 
   iniciarSesion() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Email o contraseña invalido.'
-          });
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Email o contraseña inválido.',
+      });
       return;
     }
 
-  console.log('Datos para login:', this.form.value);  
-
     this.usuarioService.iniciarSesion(this.form.value).subscribe({
       next: (res) => {
-  this.authService.login(res); 
-
-
+        this.authService.login(res);
         this.router.navigate(['/']);
       },
       error: (errorResponse) => {
-        const backendMsg = errorResponse.error?.error || 'Error desconocido';
+        const backendMsg = errorResponse.error?.error || 'Contraseña o email incorrecto';
         this.messageService.add({ severity: 'error', summary: 'Error', detail: backendMsg });
-      }
+      },
     });
   }
 }
