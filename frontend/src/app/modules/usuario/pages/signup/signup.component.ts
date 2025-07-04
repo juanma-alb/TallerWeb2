@@ -8,6 +8,7 @@ import { ToastModule } from 'primeng/toast';
 import { UsuarioService } from '../../../../api/services/usuario/usuario.service';
 import { NgIf } from '@angular/common';
 import { UsuarioRegistro } from '../../interfaces/usuario.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -18,6 +19,7 @@ import { UsuarioRegistro } from '../../interfaces/usuario.interface';
 })
 export class SignupComponent implements OnInit,OnDestroy {
   private fb = inject(FormBuilder);
+  private router = inject(Router);
   messageService = inject(MessageService);
   usuarioService = inject(UsuarioService)
   form!: FormGroup;
@@ -59,7 +61,8 @@ export class SignupComponent implements OnInit,OnDestroy {
             summary: 'Usuario creado',
             detail: 'El usuario ha sido creado con éxito.'
           });
-          this.form.reset(); // para limpiar el formulario
+          this.form.reset();
+          this.router.navigate(['/usuario/signin']); 
         },
         error: (error) => {
           console.error(error);
@@ -81,7 +84,7 @@ export class SignupComponent implements OnInit,OnDestroy {
         detail: 'Por favor, complete todos los campos obligatorios correctamente.'
       });
 
-      this.form.markAllAsTouched(); // Marcar todos los campos para que muestren sus errores
+      this.form.markAllAsTouched(); 
     }
   }
 }

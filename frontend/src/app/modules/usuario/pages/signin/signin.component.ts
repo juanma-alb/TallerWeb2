@@ -9,8 +9,6 @@ import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
 import { AuthUsuarioService } from '../../../../api/services/usuario/auth-usuario.service';
-import { UsuarioRest } from '../../../../api/services/usuario/interfaces/usuario.interface.rest';
-import { UsuarioMapper } from '../../../../api/services/usuario/mappings/usuario.mapper';
 
 @Component({
   selector: 'app-signin',
@@ -43,7 +41,7 @@ export class SigninComponent implements OnInit {
       this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: 'El email o contraseña es invalido.'
+            detail: 'Email o contraseña invalido.'
           });
       return;
     }
@@ -51,10 +49,9 @@ export class SigninComponent implements OnInit {
   console.log('Datos para login:', this.form.value);  
 
     this.usuarioService.iniciarSesion(this.form.value).subscribe({
-      next: (res: UsuarioRest) => {
-        console.log('Login OK', res);
-        UsuarioMapper.mapUsuarioRestToUsuario(res) // MAPEO A USUARIO
-        this.authService.setUsuario(res)  // Setea en LocalStorage  
+      next: (res) => {
+  this.authService.login(res); 
+
 
         this.router.navigate(['/']);
       },
