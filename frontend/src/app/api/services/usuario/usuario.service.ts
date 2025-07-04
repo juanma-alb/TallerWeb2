@@ -25,4 +25,12 @@ iniciarSesion(data: { email: string; password: string }) {
   return this.http.post<AuthResponse>(`${environment.api_url}/auth/login`, data);
 }
 
+  forgotPassword(email: string) {
+  return this.http.post(`${environment.api_url}/auth/forgot-password`, { email });
+}
+
+resetPassword(token: string, password: string) {
+  return this.http.post(`${environment.api_url}/auth/reset-password`, { token, password });
+}
+
 }

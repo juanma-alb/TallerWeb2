@@ -51,18 +51,20 @@ export class UsuarioService {
     const exp = new Date(Date.now() + 15 * 60 * 1000); // 15min
     await this.repo.setResetToken(user.id, token, exp);
 
-    // Mailtrap demo transport
     const transporter = nodemailer.createTransport({
-      host: 'sandbox.smtp.mailtrap.io',
-      port: 2525,
-      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-    });
+  service: 'gmail',
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
     await transporter.sendMail({
       to: email,
       from: 'no-reply@tallerweb2.com',
       subject: 'Recuperar contraseña',
-      html: `<p>Haz clic <a href="${CLIENT_URL}/reset?token=${token}">aquí</a> para restablecer tu contraseña.</p>`,
+      html: `<p>Haz clic <a href="${CLIENT_URL}/usuario/reset-password?token=${token}">
+        aquí</a> para restablecer tu contraseña.</p>`,
     });
   }
 
@@ -75,5 +77,6 @@ export class UsuarioService {
     const hash = await bcrypt.hash(newPass, 12);
     await this.repo.resetPassword(user.id, hash);
   }
+
 }
 

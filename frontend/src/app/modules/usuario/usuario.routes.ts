@@ -3,17 +3,26 @@ import { SigninComponent } from "./pages/signin/signin.component";
 import { SignupComponent } from "./pages/signup/signup.component";
 
 export const usuarioRoutes: Routes = [
-    {
-        path: '',
-        children:[
-            {
-                path: 'signup',
-                component: SignupComponent
-            },
-            {
-                path: 'signin',
-                component: SigninComponent
-            }
-        ]
-    }
-]
+  {
+    path: 'signup',
+    loadComponent: () =>
+      import('./pages/signup/signup.component').then(m => m.SignupComponent)
+  },
+  {
+    path: 'signin',
+    loadComponent: () =>
+      import('./pages/signin/signin.component').then(m => m.SigninComponent)
+  },
+  {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./pages/forgot-password/forgot-password.component')
+        .then(m => m.ForgotPasswordComponent)
+  },
+  {
+    path: 'reset-password',
+    loadComponent: () =>
+      import('./pages/reset-password/reset-password.component')
+        .then(m => m.ResetPasswordComponent)
+  }
+];
