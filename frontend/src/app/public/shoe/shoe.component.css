@@ -15,7 +15,6 @@
     height: auto;
     max-width: 300px;
     border-radius: 8px;
-    margin-bottom: 1rem;
 }
 
 .shoe__talles{
@@ -27,11 +26,17 @@
 
 .shoe__talle{
     padding: 0.25rem .5rem;
-    background-color: #f0f0f0;
+    background-color: #4d4d4d;
     border-radius: 4px;
-    color: #333;
+    border: none;
+    color: white;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.shoe__link:hover .shoe__talle {
+  opacity: 1;
 }
 
 .shoe__brand{
@@ -62,9 +67,10 @@
     justify-content: center;
     align-items: center;
     padding: 0.5rem 1rem;
-    background-color: #007bff;
+    background-color: #1c1c1c;
     color: white;
     border-radius: 4px;
+    border: none;
     width: 100%;
     cursor: pointer;
     text-decoration: none;
