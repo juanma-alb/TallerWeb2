@@ -5,34 +5,23 @@
 
     <div class="filter">
       <label class="filter__label">Marca</label>
-      <div class="filter__div">
-        <input class="filter__input" type="checkbox" /> Puma
-      </div>
-      <div class="filter__div">
-        <input class="filter__input" type="checkbox" /> Fila
-      </div>
-      <div class="filter__div">
-        <input class="filter__input" type="checkbox" /> Adidas
+      <div class="filter__div" *ngFor="let marca of marcas">
+        <input type="checkbox" (change)="toggleMarca(marca)" />
+        {{ marca | titlecase }}
       </div>
     </div>
 
     <div class="filter">
       <label class="filter__label">Talle</label>
-      <div class="filter__div">
-        <input class="filter__input" type="checkbox" /> 38
-      </div>
-      <div class="filter__div">
-        <input class="filter__input" type="checkbox" /> 39
-      </div>
-      <div class="filter__div">
-        <input class="filter__input" type="checkbox" /> 40
+      <div class="filter__div" *ngFor="let talle of talles">
+        <input type="checkbox" (change)="toggleTalle(talle)" /> {{ talle }}
       </div>
     </div>
   </aside>
 
   <!-- Productos -->
   <section class="products">
-    <div class="products__div" *ngFor="let zapatilla of zapatillas">
+    <div class="products__div" *ngFor="let zapatilla of filteredZapatillas">
       <app-shoe [zapatilla]="zapatilla" />
     </div>
   </section>
