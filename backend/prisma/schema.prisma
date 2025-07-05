@@ -31,22 +31,21 @@ enum Role {
   ADMIN
 }
 
-
 model Marca {
   id         Int         @id @default(autoincrement())
-  nombre     String
+  nombre     String      @unique
   zapatillas Zapatilla[]
 }
 
 model Color {
   id         Int         @id @default(autoincrement())
-  nombre     String
+  nombre     String      @unique
   zapatillas Zapatilla[]
 }
 
 model Talle {
   id     Int     @id @default(autoincrement())
-  numero Float
+  numero Float   @unique
   stock  Stock[]
 }
 

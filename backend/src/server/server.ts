@@ -1,5 +1,6 @@
 import express, { Router } from 'express';
 import cors from 'cors';
+import { cargarDatos } from '../prisma';
 
 interface Options {
     port: number;
@@ -27,6 +28,8 @@ export class Server {
         this.app.use(cors())
 
         this.app.use(this.routes);
+
+        cargarDatos()
 
         this.app.listen(this.port, ()=>{
             console.log("Servidor corriendo en el puerto " + this.port);
