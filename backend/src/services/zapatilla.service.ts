@@ -6,7 +6,11 @@ export class ZapatillaService {
     private repo = new ZapatillaRepository()
 
     async getAll(): Promise<ZapatillaConRelaciones[]> {
-        return this.repo.findAll()
+        const zapatillas = await this.repo.findAll()
+
+        return zapatillas.filter(z =>
+            z.stock?.some(s => s.activo && s.cantidad > 0)
+        )
     }
 
     async getById(id: number): Promise<ZapatillaConRelaciones | null> {
