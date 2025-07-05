@@ -14,6 +14,11 @@ export const usuarioRoutes: Routes = [
       import('./pages/signin/signin.component').then(m => m.SigninComponent)
   },
   {
+    path: 'admin',
+    loadComponent: () =>
+      import('./pages/admin/admin.component').then(m => m.AdminComponent)
+  },
+  {
     path: 'forgot-password',
     loadComponent: () =>
       import('./pages/forgot-password/forgot-password.component')

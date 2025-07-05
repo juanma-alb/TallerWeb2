@@ -63,6 +63,8 @@ export class SigninComponent implements OnInit {
       next: (res) => {
         this.authService.login(res);
         this.router.navigate(['/']);
+
+        // si tiene ROL admin enviarlo a la vista de admin
       },
       error: (errorResponse) => {
         const backendMsg = errorResponse.error?.error || 'Contraseña o email incorrecto';

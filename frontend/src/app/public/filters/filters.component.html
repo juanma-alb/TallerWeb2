@@ -1,3 +1,5 @@
+<div class="container-filters">
+    <h2 class="filters__title">FILTRAR POR</h2>
 <h2 class="filters__title">FILTRAR POR</h2>
 
 <div class="filter">
@@ -43,38 +45,39 @@
   </div>
 </div>
 
-<div class="filter">
-  <label class="filter__label">Color</label>
-  <div class="filter__div" *ngFor="let color of colores">
-    <input
-      type="checkbox"
-      [checked]="isChecked(selectedColores, color)"
-      (change)="toggleColor(color)"
-    />
-    {{ color | titlecase }}
-  </div>
-</div>
+    <div class="filter">
+      <label class="filter__label">Color</label>
+      <div class="filter__div" *ngFor="let color of colores">
+        <input
+          type="checkbox"
+          [checked]="isChecked(selectedColores, color)"
+          (change)="toggleColor(color)"
+        />
+        {{ color | titlecase }}
+      </div>
+    </div>
 
-<div class="filter">
-  <label class="filter__label">Talle</label>
-  <div class="filter__div" *ngFor="let talle of talles">
-    <input
-      type="checkbox"
-      [checked]="isChecked(selectedTalles, talle)"
-      (change)="toggleTalle(talle)"
-    />
-    {{ talle }}
-  </div>
-</div>
+    <div class="filter">
+      <label class="filter__label">Talle</label>
+      <div class="filter__div" *ngFor="let talle of talles">
+        <input
+          type="checkbox"
+          [checked]="isChecked(selectedTalles, talle)"
+          (change)="toggleTalle(talle)"
+        />
+        {{ talle }}
+      </div>
+    </div>
 
-<div class="filter">
-  <label class="filter__label">Sexo</label>
-  <div class="filter__div" *ngFor="let sexo of sexos">
-    <input
-      type="checkbox"
-      [checked]="isChecked(selectedSexos, sexo)"
-      (change)="toggleSexo(sexo)"
-    />
-    {{ sexo | titlecase }}
-  </div>
+    <div class="filter">
+      <label class="filter__label">Sexo</label>
+      <div class="filter__div" *ngFor="let sexo of sexos">
+        <input
+          type="checkbox"
+          [checked]="isChecked(selectedSexos, sexo)"
+          (change)="toggleSexo(sexo)"
+        />
+        {{ sexo | titlecase }}
+      </div>
+    </div>
 </div>

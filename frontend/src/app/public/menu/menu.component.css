@@ -82,3 +82,14 @@ body {
   font-size: 1.2rem;
   padding: 1rem;
 }
+
+::ng-deep .p-drawer {
+  background-color: var(--color-primario) !important;
+}
+
+.drawer-paragraph {
+  color: var(--color-secundario);
+  font-size: 16px;
+  line-height: 1.5;
+  padding: 1rem;
+}

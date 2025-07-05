@@ -1,0 +1,44 @@
+<div class="container">
+  <h1>Crear Nuevo Producto</h1>
+  <form>
+    <div class="form-group">
+      <label for="nombre">Nombre del producto</label>
+      <input type="text" id="nombre" name="nombre" [(ngModel)]="producto.nombre" required>
+    </div>
+
+    <div class="form-group">
+      <label for="marca">Marca</label>
+      <input type="text" id="marca" name="marca" [(ngModel)]="producto.marca" required>
+    </div>
+
+    <div class="form-group">
+      <label for="color">Color</label>
+      <input type="text" id="color" name="color" [(ngModel)]="producto.color" required>
+    </div>
+
+    <div class="form-group">
+      <label for="talle">Talle</label>
+      <select id="talle" name="talle" [(ngModel)]="producto.talle" required>
+        <option value="">-- Selecciona un talle --</option>
+        <option value="XS">XS</option>
+        <option value="S">S</option>
+        <option value="M">M</option>
+        <option value="L">L</option>
+        <option value="XL">XL</option>
+        <option value="XXL">XXL</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="sexo">Sexo</label>
+      <select id="sexo" name="sexo" [(ngModel)]="producto.sexo" required>
+        <option value="">-- Selecciona una opción --</option>
+        <option value="hombre">Hombre</option>
+        <option value="mujer">Mujer</option>
+        <option value="unisex">Unisex</option>
+      </select>
+    </div>
+
+    <button type="submit" (click)="guardarProducto()">Guardar Producto</button>
+  </form>
+</div>
