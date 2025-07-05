@@ -1,0 +1,71 @@
+.shoe__link{
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.shoe{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.shoe__image{
+    width: 100%;
+    height: auto;
+    max-width: 300px;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.shoe__talles{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.shoe__talle{
+    padding: 0.25rem .5rem;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.shoe__brand{
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.shoe__title{
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.shoe__prices{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.shoe__price{
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.shoe__add{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    width: 100%;
+    cursor: pointer;
+    text-decoration: none;
+}
