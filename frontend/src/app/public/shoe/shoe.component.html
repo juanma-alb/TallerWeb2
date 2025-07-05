@@ -1,7 +1,7 @@
 <a [routerLink]="['/productos', zapatilla.id]" class="shoe__link" routerLinkActive="active">
   <article class="shoe">
     <img
-      [src]="zapatilla.imagen"
+      [src]="'/img/' + zapatilla.imagen"
       alt="{{ zapatilla.nombre }}"
       class="shoe__image"
     />
