@@ -1,0 +1,25 @@
+<h2 class="filters__title">FILTRAR POR</h2>
+
+<div class="filter">
+  <label class="filter__label">Marca</label>
+  <div class="filter__div" *ngFor="let marca of marcas">
+    <input
+      type="checkbox"
+      [checked]="isCheckedMarca(marca)"
+      (change)="toggleMarca(marca)"
+    />
+    {{ marca | titlecase }}
+  </div>
+</div>
+
+<div class="filter">
+  <label class="filter__label">Talle</label>
+  <div class="filter__div" *ngFor="let talle of talles">
+    <input
+      type="checkbox"
+      [checked]="isCheckedTalle(talle)"
+      (change)="toggleTalle(talle)"
+    />
+    {{ talle }}
+  </div>
+</div>

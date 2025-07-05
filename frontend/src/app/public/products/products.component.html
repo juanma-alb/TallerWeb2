@@ -1,22 +1,13 @@
 <main class="main">
-  <!-- Filtros -->
   <aside class="filters">
-    <h2 class="filters__title">FILTRAR POR</h2>
-
-    <div class="filter">
-      <label class="filter__label">Marca</label>
-      <div class="filter__div" *ngFor="let marca of marcas">
-        <input type="checkbox" (change)="toggleMarca(marca)" />
-        {{ marca | titlecase }}
-      </div>
-    </div>
-
-    <div class="filter">
-      <label class="filter__label">Talle</label>
-      <div class="filter__div" *ngFor="let talle of talles">
-        <input type="checkbox" (change)="toggleTalle(talle)" /> {{ talle }}
-      </div>
-    </div>
+    <app-filters
+      [marcas]="marcas"
+      [talles]="talles"
+      [selectedMarcas]="selectedMarcas"
+      [selectedTalles]="selectedTalles"
+      (marcaToggled)="toggleMarca($event)"
+      (talleToggled)="toggleTalle($event)"
+    />
   </aside>
 
   <!-- Productos -->

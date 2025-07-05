@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ShoeComponent } from '../shoe/shoe.component';
+import { FiltersComponent } from '../filters/filters.component';
 import { Zapatilla } from '../../../interfaces';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environment/environment.development';
@@ -8,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
-  imports: [CommonModule, ShoeComponent],
+  imports: [CommonModule, ShoeComponent, FiltersComponent],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css',
 })
