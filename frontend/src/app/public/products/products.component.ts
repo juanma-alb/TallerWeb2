@@ -9,18 +9,26 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
+  standalone: true,
   imports: [CommonModule, ShoeComponent, FiltersComponent],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css',
 })
 export class ProductsComponent implements OnInit {
-  marcas: string[] = [];
-  talles: number[] = [];
   zapatillas: Zapatilla[] = [];
   filteredZapatillas: Zapatilla[] = [];
 
-  selectedMarcas: string[] = [];
-  selectedTalles: number[] = [];
+  marcas: string[] = [];
+  talles: number[] = [];
+  colores: string[] = [];
+  sexos: string[] = ['hombre', 'mujer', 'niño'];
+
+  selectedFilters = {
+    marcas: [] as string[],
+    talles: [] as number[],
+    colores: [] as string[],
+    sexos: [] as string[],
+  };
 
   loading = true;
   error = '';
@@ -32,27 +40,40 @@ export class ProductsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getMarcas();
-    this.getTalles();
-
-    // Leer filtros desde query params al inicio
+    this.fetchFilters();
     this.route.queryParamMap.subscribe((params) => {
-      const marcasParam = params.get('marcas');
-      const tallesParam = params.get('talles');
-
-      this.selectedMarcas = marcasParam ? marcasParam.split(',') : [];
-      this.selectedTalles = tallesParam
-        ? tallesParam
-            .split(',')
-            .map(Number)
-            .filter((n) => !isNaN(n))
-        : [];
-
-      this.getZapatillas();
+      this.selectedFilters.marcas = this.parseParam(params.get('marcas'));
+      this.selectedFilters.talles = this.parseParam(params.get('talles'))
+        .map(Number)
+        .filter((n) => !isNaN(n));
+      this.selectedFilters.colores = this.parseParam(params.get('colores'));
+      this.selectedFilters.sexos = this.parseParam(params.get('sexos'));
+      this.fetchZapatillas();
     });
   }
 
-  getZapatillas(): void {
+  private parseParam(value: string | null): string[] {
+    return value ? value.split(',').map((v) => v.trim().toLowerCase()) : [];
+  }
+
+  private fetchFilters(): void {
+    this.http.get<any[]>(`${environment.api_url}/marca`).subscribe({
+      next: (data) => (this.marcas = data.map((m) => m.nombre.toLowerCase())),
+      error: (err) => console.error('Error al cargar marcas', err),
+    });
+
+    this.http.get<any[]>(`${environment.api_url}/talle`).subscribe({
+      next: (data) => (this.talles = data.map((t) => t.numero)),
+      error: (err) => console.error('Error al cargar talles', err),
+    });
+
+    this.http.get<any[]>(`${environment.api_url}/color`).subscribe({
+      next: (data) => (this.colores = data.map((c) => c.nombre.toLowerCase())),
+      error: (err) => console.error('Error al cargar colores', err),
+    });
+  }
+
+  private fetchZapatillas(): void {
     this.loading = true;
     this.http.get<Zapatilla[]>(`${environment.api_url}/zapatilla`).subscribe({
       next: (data) => {
@@ -68,72 +89,64 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  getMarcas(): void {
-    this.http.get<any[]>(`${environment.api_url}/marca`).subscribe({
-      next: (data) => {
-        this.marcas = data.map((m) => m.nombre.toLowerCase());
-      },
-      error: (err) => console.error('Error al cargar marcas', err),
-    });
-  }
-
-  getTalles(): void {
-    this.http.get<any[]>(`${environment.api_url}/talle`).subscribe({
-      next: (data) => {
-        this.talles = data.map((t) => t.numero);
-      },
-      error: (err) => console.error('Error al cargar talles', err),
-    });
-  }
-
-  toggleMarca(marca: string): void {
-    if (!marca) return;
-    marca = marca.toLowerCase();
-    const i = this.selectedMarcas.indexOf(marca);
-    i > -1 ? this.selectedMarcas.splice(i, 1) : this.selectedMarcas.push(marca);
+  toggleFilter<T>(filter: any[], value: T): void {
+    const index = filter.indexOf(value as any);
+    index > -1 ? filter.splice(index, 1) : filter.push(value as any);
     this.updateQueryParams();
     this.filterZapatillas();
   }
 
-  toggleTalle(talle: number): void {
-    const i = this.selectedTalles.indexOf(talle);
-    i > -1 ? this.selectedTalles.splice(i, 1) : this.selectedTalles.push(talle);
-    this.updateQueryParams();
-    this.filterZapatillas();
+  toggleMarca(marca: string) {
+    this.toggleFilter(this.selectedFilters.marcas, marca.toLowerCase());
+  }
+
+  toggleTalle(talle: number) {
+    this.toggleFilter(this.selectedFilters.talles, talle);
+  }
+
+  toggleColor(color: string) {
+    this.toggleFilter(this.selectedFilters.colores, color.toLowerCase());
+  }
+
+  toggleSexo(sexo: string) {
+    this.toggleFilter(this.selectedFilters.sexos, sexo.toLowerCase());
   }
 
   filterZapatillas(): void {
+    const { marcas, talles, colores, sexos } = this.selectedFilters;
+
     this.filteredZapatillas = this.zapatillas.filter((z) => {
-      const marcaNombre = z.marca?.nombre?.toLowerCase() || '';
+      const marca = z.marca?.nombre?.toLowerCase() || '';
+      const color = z.color?.nombre?.toLowerCase() || '';
+      const sexo = z.sexo?.toLowerCase() || '';
 
-      const matchMarca =
-        this.selectedMarcas.length === 0 ||
-        this.selectedMarcas.includes(marcaNombre);
-
+      const matchMarca = marcas.length === 0 || marcas.includes(marca);
+      const matchColor = colores.length === 0 || colores.includes(color);
+      const matchSexo = sexos.length === 0 || sexos.includes(sexo);
       const matchTalle =
-        this.selectedTalles.length === 0 ||
+        talles.length === 0 ||
         z.stock?.some(
           (s) =>
             s.activo &&
             s.cantidad > 0 &&
             s.talle?.numero !== undefined &&
-            this.selectedTalles.includes(s.talle.numero)
+            talles.includes(s.talle.numero)
         );
 
-      return matchMarca && matchTalle;
+      return matchMarca && matchColor && matchSexo && matchTalle;
     });
   }
 
   private updateQueryParams(): void {
+    const { marcas, talles, colores, sexos } = this.selectedFilters;
+
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        marcas: this.selectedMarcas.length
-          ? this.selectedMarcas.join(',')
-          : null,
-        talles: this.selectedTalles.length
-          ? this.selectedTalles.join(',')
-          : null,
+        marcas: marcas.length ? marcas.join(',') : null,
+        talles: talles.length ? talles.join(',') : null,
+        colores: colores.length ? colores.join(',') : null,
+        sexos: sexos.length ? sexos.join(',') : null,
       },
       queryParamsHandling: 'merge',
       replaceUrl: true,

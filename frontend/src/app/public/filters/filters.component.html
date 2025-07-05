@@ -5,10 +5,22 @@
   <div class="filter__div" *ngFor="let marca of marcas">
     <input
       type="checkbox"
-      [checked]="isCheckedMarca(marca)"
+      [checked]="isChecked(selectedMarcas, marca)"
       (change)="toggleMarca(marca)"
     />
     {{ marca | titlecase }}
+  </div>
+</div>
+
+<div class="filter">
+  <label class="filter__label">Color</label>
+  <div class="filter__div" *ngFor="let color of colores">
+    <input
+      type="checkbox"
+      [checked]="isChecked(selectedColores, color)"
+      (change)="toggleColor(color)"
+    />
+    {{ color | titlecase }}
   </div>
 </div>
 
@@ -17,9 +29,21 @@
   <div class="filter__div" *ngFor="let talle of talles">
     <input
       type="checkbox"
-      [checked]="isCheckedTalle(talle)"
+      [checked]="isChecked(selectedTalles, talle)"
       (change)="toggleTalle(talle)"
     />
     {{ talle }}
+  </div>
+</div>
+
+<div class="filter">
+  <label class="filter__label">Sexo</label>
+  <div class="filter__div" *ngFor="let sexo of sexos">
+    <input
+      type="checkbox"
+      [checked]="isChecked(selectedSexos, sexo)"
+      (change)="toggleSexo(sexo)"
+    />
+    {{ sexo | titlecase }}
   </div>
 </div>

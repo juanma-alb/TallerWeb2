@@ -3,10 +3,16 @@
     <app-filters
       [marcas]="marcas"
       [talles]="talles"
-      [selectedMarcas]="selectedMarcas"
-      [selectedTalles]="selectedTalles"
+      [colores]="colores"
+      [sexos]="sexos"
+      [selectedMarcas]="selectedFilters.marcas"
+      [selectedTalles]="selectedFilters.talles"
+      [selectedColores]="selectedFilters.colores"
+      [selectedSexos]="selectedFilters.sexos"
       (marcaToggled)="toggleMarca($event)"
       (talleToggled)="toggleTalle($event)"
+      (colorToggled)="toggleColor($event)"
+      (sexoToggled)="toggleSexo($event)"
     />
   </aside>
 

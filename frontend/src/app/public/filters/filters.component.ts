@@ -1,34 +1,46 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-filters',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './filters.component.html',
-  styleUrls: ['./filters.component.css'],
+  styleUrl: './filters.component.css',
 })
 export class FiltersComponent {
   @Input() marcas: string[] = [];
   @Input() talles: number[] = [];
+  @Input() colores: string[] = [];
+  @Input() sexos: string[] = [];
+
   @Input() selectedMarcas: string[] = [];
   @Input() selectedTalles: number[] = [];
+  @Input() selectedColores: string[] = [];
+  @Input() selectedSexos: string[] = [];
 
   @Output() marcaToggled = new EventEmitter<string>();
   @Output() talleToggled = new EventEmitter<number>();
+  @Output() colorToggled = new EventEmitter<string>();
+  @Output() sexoToggled = new EventEmitter<string>();
 
-  toggleMarca(marca: string) {
-    this.marcaToggled.emit(marca);
+  toggleMarca(m: string) {
+    this.marcaToggled.emit(m);
   }
 
-  toggleTalle(talle: number) {
-    this.talleToggled.emit(talle);
+  toggleTalle(t: number) {
+    this.talleToggled.emit(t);
   }
 
-  isCheckedMarca(marca: string): boolean {
-    return this.selectedMarcas.includes(marca);
+  toggleColor(c: string) {
+    this.colorToggled.emit(c);
   }
 
-  isCheckedTalle(talle: number): boolean {
-    return this.selectedTalles.includes(talle);
+  toggleSexo(s: string) {
+    this.sexoToggled.emit(s);
+  }
+
+  isChecked(list: any[], value: any): boolean {
+    return list.includes(value);
   }
 }
