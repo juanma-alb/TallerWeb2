@@ -1,14 +1,15 @@
 import { Zapatilla } from '@prisma/client'
 import { ZapatillaRepository } from '../repository/zapatilla.repository'
+import { ZapatillaConRelaciones } from '../types/zapatilla.type'
 
 export class ZapatillaService {
     private repo = new ZapatillaRepository()
 
-    async getAll(): Promise<Zapatilla[]> {
+    async getAll(): Promise<ZapatillaConRelaciones[]> {
         return this.repo.findAll()
     }
 
-    async getById(id: number): Promise<Zapatilla | null> {
+    async getById(id: number): Promise<ZapatillaConRelaciones | null> {
         if (id <= 0) throw new Error('ID inválido')
         return this.repo.findById(id)
     }
