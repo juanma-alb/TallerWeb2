@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ShoeComponent } from '../shoe/shoe.component';
+import { Zapatilla } from '../../../interfaces';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-products',
@@ -8,10 +10,30 @@ import { ShoeComponent } from '../shoe/shoe.component';
   templateUrl: './products.component.html',
   styleUrl: './products.component.css',
 })
-export class ProductsComponent {
-  shoes = [
-    { id: 1, name: 'Shoe 1', price: 100 },
-    { id: 2, name: 'Shoe 2', price: 150 },
-    { id: 3, name: 'Shoe 3', price: 200 },
-  ];
+export class ProductsComponent implements OnInit {
+  zapatillas: Zapatilla[] = [];
+  loading: boolean = true;
+  error: string | null = null;
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.getZapatillas();
+  }
+
+  getZapatillas(): void {
+    this.http
+      .get<Zapatilla[]>('http://localhost:3000/api/zapatilla')
+      .subscribe({
+        next: (data) => {
+          this.zapatillas = data;
+          this.loading = false;
+        },
+        error: (err) => {
+          this.error = 'Error al cargar las zapatillas';
+          console.error(err);
+          this.loading = false;
+        },
+      });
+  }
 }

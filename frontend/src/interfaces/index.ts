@@ -28,9 +28,9 @@ export interface Zapatilla {
   descripcion?: string;
   imagen?: string;
 
-  marca?: Marca;
-  color?: Color;
-  stock?: Stock[];
+  marca: Marca;
+  color: Color;
+  stock: Stock[];
 }
 
 export interface Stock {

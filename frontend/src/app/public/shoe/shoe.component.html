@@ -1,1 +1,36 @@
-<p>shoe works!</p>
+<article class="shoe-card">
+  <img
+    [src]="zapatilla.imagen"
+    alt="{{ zapatilla.nombre }}"
+    class="shoe-card__image"
+  />
+
+  <div class="shoe-card__talles" *ngIf="zapatilla.stock?.length">
+    <button
+      class="shoe-card__talle"
+      *ngFor="let item of zapatilla.stock"
+      [disabled]="!item.activo || item.cantidad === 0"
+    >
+      {{ item.talle?.numero }}
+    </button>
+  </div>
+
+  <img
+    src="/assets/logo-{{ zapatilla.marca.nombre.toLowerCase() }}.png"
+    alt="{{ zapatilla.marca.nombre }}"
+    height="20"
+    class="shoe-card__logo"
+  />
+
+  <p class="shoe-card__title">
+    {{ zapatilla.nombre }}
+  </p>
+
+  <div class="shoe-card__prices">
+    <span class="shoe-card__price">
+      ${{ zapatilla.precio.toLocaleString("es-AR") }}
+    </span>
+  </div>
+
+  <button class="shoe-card__add">Agregar al carrito</button>
+</article>
