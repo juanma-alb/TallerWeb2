@@ -33,3 +33,12 @@
   background: #fff;
   color: black;
 }
+
+.container-filters{
+  background-color: var(--color-acento);
+  padding: 2rem;
+}
+
+.filters__title{
+  font-family: 'Bebas Neue', sans-serif; 
+}
