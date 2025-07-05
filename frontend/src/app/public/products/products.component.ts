@@ -4,6 +4,7 @@ import { ShoeComponent } from '../shoe/shoe.component';
 import { Zapatilla } from '../../../interfaces';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environment/environment.development';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -23,29 +24,47 @@ export class ProductsComponent implements OnInit {
   loading = true;
   error = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.getZapatillas();
     this.getMarcas();
     this.getTalles();
+
+    // Leer filtros desde query params al inicio
+    this.route.queryParamMap.subscribe((params) => {
+      const marcasParam = params.get('marcas');
+      const tallesParam = params.get('talles');
+
+      this.selectedMarcas = marcasParam ? marcasParam.split(',') : [];
+      this.selectedTalles = tallesParam
+        ? tallesParam
+            .split(',')
+            .map(Number)
+            .filter((n) => !isNaN(n))
+        : [];
+
+      this.getZapatillas();
+    });
   }
 
   getZapatillas(): void {
-    this.http
-      .get<Zapatilla[]>(`${environment.api_url}/zapatilla`)
-      .subscribe({
-        next: (data) => {
-          this.zapatillas = data;
-          this.filteredZapatillas = data;
-          this.loading = false;
-        },
-        error: (err) => {
-          this.error = 'Error al cargar las zapatillas';
-          console.error(err);
-          this.loading = false;
-        },
-      });
+    this.loading = true;
+    this.http.get<Zapatilla[]>(`${environment.api_url}/zapatilla`).subscribe({
+      next: (data) => {
+        this.zapatillas = data;
+        this.filterZapatillas();
+        this.loading = false;
+      },
+      error: (err) => {
+        this.error = 'Error al cargar las zapatillas';
+        console.error(err);
+        this.loading = false;
+      },
+    });
   }
 
   getMarcas(): void {
@@ -71,12 +90,14 @@ export class ProductsComponent implements OnInit {
     marca = marca.toLowerCase();
     const i = this.selectedMarcas.indexOf(marca);
     i > -1 ? this.selectedMarcas.splice(i, 1) : this.selectedMarcas.push(marca);
+    this.updateQueryParams();
     this.filterZapatillas();
   }
 
   toggleTalle(talle: number): void {
     const i = this.selectedTalles.indexOf(talle);
     i > -1 ? this.selectedTalles.splice(i, 1) : this.selectedTalles.push(talle);
+    this.updateQueryParams();
     this.filterZapatillas();
   }
 
@@ -99,6 +120,22 @@ export class ProductsComponent implements OnInit {
         );
 
       return matchMarca && matchTalle;
+    });
+  }
+
+  private updateQueryParams(): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        marcas: this.selectedMarcas.length
+          ? this.selectedMarcas.join(',')
+          : null,
+        talles: this.selectedTalles.length
+          ? this.selectedTalles.join(',')
+          : null,
+      },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
     });
   }
 }
