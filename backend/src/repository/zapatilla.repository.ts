@@ -2,8 +2,9 @@ import { PrismaClient, Zapatilla } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export class ZapatillaRepository {
-    findAll() {
+    findAll(where: any) {
         return prisma.zapatilla.findMany({
+            where,
             include: {
                 marca: true,
                 color: true,

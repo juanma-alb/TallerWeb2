@@ -1,6 +1,37 @@
 <h2 class="filters__title">FILTRAR POR</h2>
 
 <div class="filter">
+  <label class="filter__label">Buscar</label>
+  <input
+    type="text"
+    placeholder="Buscar por nombre o descripción"
+    [(ngModel)]="searchTerm"
+    (ngModelChange)="onSearchTermChange()"
+    class="input__search"
+  />
+</div>
+
+<div class="filter">
+  <label class="filter__label">Precio</label>
+  <div class="filters__price">
+    <input
+    type="number"
+    placeholder="Precio mínimo"
+    [(ngModel)]="minPrice"
+    (ngModelChange)="onMinPriceChange()"
+    class="input__search"
+  />
+  <input
+    type="number"
+    [ngModel]="maxPrice"
+    (ngModelChange)="onMaxPriceInput($event)"
+    placeholder="Precio máximo"
+    class="input__search"
+  />
+  </div>
+</div>
+
+<div class="filter">
   <label class="filter__label">Marca</label>
   <div class="filter__div" *ngFor="let marca of marcas">
     <input

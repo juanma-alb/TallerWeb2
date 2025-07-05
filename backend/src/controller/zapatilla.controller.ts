@@ -6,10 +6,12 @@ export class ZapatillaController {
 
     async findAll(req: Request, res: Response): Promise<void> {
         try {
-            const data = await this.service.getAll()
-            res.json(data)
+            const filters = req.query
+            const zapatillas = await this.service.getFilteredZapatillas(filters)
+            res.json(zapatillas)
         } catch (error) {
-            res.status(500).json({ error: (error as Error).message })
+            console.error(error)
+            res.status(500).json({ error: 'Error al obtener zapatillas' })
         }
     }
 

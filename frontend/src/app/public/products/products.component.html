@@ -9,10 +9,16 @@
       [selectedTalles]="selectedFilters.talles"
       [selectedColores]="selectedFilters.colores"
       [selectedSexos]="selectedFilters.sexos"
+      [searchTerm]="searchTerm"
+      [minPrice]="minPrice"
+      [maxPrice]="maxPrice"
       (marcaToggled)="toggleMarca($event)"
       (talleToggled)="toggleTalle($event)"
       (colorToggled)="toggleColor($event)"
       (sexoToggled)="toggleSexo($event)"
+      (searchTermChange)="onSearchTermChange($event)"
+      (minPriceChange)="onMinPriceChange($event)"
+      (maxPriceChange)="onMaxPriceChange($event)"
     />
   </aside>
 

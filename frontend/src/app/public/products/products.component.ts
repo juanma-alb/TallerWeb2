@@ -18,6 +18,9 @@ export class ProductsComponent implements OnInit {
   zapatillas: Zapatilla[] = [];
   filteredZapatillas: Zapatilla[] = [];
 
+  searchTerm: string = '';
+  minPrice: number | null = null;
+  maxPrice: number | null = null;
   marcas: string[] = [];
   talles: number[] = [];
   colores: string[] = [];
@@ -75,25 +78,59 @@ export class ProductsComponent implements OnInit {
 
   private fetchZapatillas(): void {
     this.loading = true;
-    this.http.get<Zapatilla[]>(`${environment.api_url}/zapatilla`).subscribe({
-      next: (data) => {
-        this.zapatillas = data;
-        this.filterZapatillas();
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = 'Error al cargar las zapatillas';
-        console.error(err);
-        this.loading = false;
-      },
-    });
+
+    const queryParams: any = {
+      marcas: this.selectedFilters.marcas.join(','),
+      talles: this.selectedFilters.talles.join(','),
+      colores: this.selectedFilters.colores.join(','),
+      sexos: this.selectedFilters.sexos.join(','),
+    };
+
+    if (this.searchTerm) queryParams.search = this.searchTerm;
+    if (this.minPrice !== null) queryParams.minPrice = this.minPrice;
+    if (this.maxPrice !== null) queryParams.maxPrice = this.maxPrice;
+
+    this.http
+      .get<Zapatilla[]>(`${environment.api_url}/zapatilla`, {
+        params: queryParams,
+      })
+      .subscribe({
+        next: (data) => {
+          this.zapatillas = data;
+          this.filteredZapatillas = data;
+          this.loading = false;
+        },
+        error: (err) => {
+          this.error = 'Error al cargar las zapatillas';
+          console.error(err);
+          this.loading = false;
+        },
+      });
+  }
+
+  onSearchTermChange(value: string) {
+    this.searchTerm = value;
+    this.updateQueryParams();
+    this.fetchZapatillas();
+  }
+
+  onMinPriceChange(value: number | null) {
+    this.minPrice = value;
+    this.updateQueryParams();
+    this.fetchZapatillas();
+  }
+
+  onMaxPriceChange(value: number | null) {
+    this.maxPrice = value;
+    this.updateQueryParams();
+    this.fetchZapatillas();
   }
 
   toggleFilter<T>(filter: any[], value: T): void {
     const index = filter.indexOf(value as any);
     index > -1 ? filter.splice(index, 1) : filter.push(value as any);
     this.updateQueryParams();
-    this.filterZapatillas();
+    this.fetchZapatillas();
   }
 
   toggleMarca(marca: string) {
@@ -110,31 +147,6 @@ export class ProductsComponent implements OnInit {
 
   toggleSexo(sexo: string) {
     this.toggleFilter(this.selectedFilters.sexos, sexo.toLowerCase());
-  }
-
-  filterZapatillas(): void {
-    const { marcas, talles, colores, sexos } = this.selectedFilters;
-
-    this.filteredZapatillas = this.zapatillas.filter((z) => {
-      const marca = z.marca?.nombre?.toLowerCase() || '';
-      const color = z.color?.nombre?.toLowerCase() || '';
-      const sexo = z.sexo?.toLowerCase() || '';
-
-      const matchMarca = marcas.length === 0 || marcas.includes(marca);
-      const matchColor = colores.length === 0 || colores.includes(color);
-      const matchSexo = sexos.length === 0 || sexos.includes(sexo);
-      const matchTalle =
-        talles.length === 0 ||
-        z.stock?.some(
-          (s) =>
-            s.activo &&
-            s.cantidad > 0 &&
-            s.talle?.numero !== undefined &&
-            talles.includes(s.talle.numero)
-        );
-
-      return matchMarca && matchColor && matchSexo && matchTalle;
-    });
   }
 
   private updateQueryParams(): void {

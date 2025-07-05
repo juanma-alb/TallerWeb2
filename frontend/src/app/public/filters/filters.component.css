@@ -18,3 +18,18 @@
   border: 1px solid #ddd;
   border-radius: 4px;
 }
+
+.filters__price{
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.input__search{
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #fff;
+  color: black;
+}
