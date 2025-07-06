@@ -50,8 +50,17 @@
       <small *ngIf="form.get('password')?.hasError('minlength') && form.get('password')?.touched" class="text-danger fw-bold">
         La contraseña debe tener al menos 6 caracteres
       </small>
-    </div>
-
+    <small
+      *ngIf="
+        form.get('password')?.hasError('pattern') &&
+        form.get('password')?.touched
+      "
+      class="text-danger fw-bold"
+    >
+      La contraseña debe tener al menos 8&nbsp;caracteres, 1&nbsp;mayúscula y 1&nbsp;número.
+    </small>
+      </div>
+      
     <div class="mb-3">
       <label for="address" class="text-dark">Dirección:</label>
       <input id="address" type="text" pInputText formControlName="address" class="bg-white text-dark w-100" placeholder="Dirección" />
