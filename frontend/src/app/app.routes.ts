@@ -2,7 +2,8 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './public/home/home.component';
 import { authGuard } from '../core/interceptors/guards/auth.guard';
 import { ProductsComponent } from './public/products/products.component';
-          
+import { CarritoComponent } from './public/carrito/carrito.component';
+
 
 export const routes: Routes = [
   {
@@ -12,6 +13,10 @@ export const routes: Routes = [
   {
     path: 'productos',
     component: ProductsComponent
+  },
+  {
+    path: 'carrito',
+    component: CarritoComponent
   },
   {
     path: 'usuario',

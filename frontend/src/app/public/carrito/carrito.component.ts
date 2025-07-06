@@ -1,112 +1,96 @@
-// src/app/modules/usuario/components/menu/menu.component.ts
-import { Component, effect, inject } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { CommonModule, NgIf } from '@angular/common';
-import { DrawerModule } from 'primeng/drawer';
-import { ButtonModule } from 'primeng/button';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CarritoService } from '../../api/services/carrito/carrito.service';
+import { Carrito } from '../../../interfaces';
 import Swal from 'sweetalert2';
 
-import { AuthUsuarioService } from '../../api/services/usuario/auth-usuario.service';
-import { Carrito } from '../../../interfaces';
-import { CarritoService } from '../../api/services/carrito/carrito.service';
-
 @Component({
-  selector: 'app-menu',
+  selector: 'app-carrito',
   standalone: true,
-  imports: [RouterLink, RouterOutlet, NgIf, DrawerModule, ButtonModule, CommonModule],
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css'],
+  imports: [CommonModule, RouterModule, FormsModule],
+  templateUrl: './carrito.component.html',
+  styleUrls: ['./carrito.component.css']
 })
-export class MenuComponent {
-  cart  = '/img/cart-1.svg';
-  cart1 = '/img/cart.svg';
-  visible2 = false;
-
-  // Propiedades del carrito
+export class CarritoComponent implements OnInit {
   carrito: Carrito | null = null;
-  cantidadTotal = 0;
+  loading = true;
   updating = false;
+  mensaje = '';
+  esError = false;
 
-  private auth   = inject(AuthUsuarioService);
-  private router = inject(Router);
-  private carritoService = inject(CarritoService);
+  constructor(
+    private carritoService: CarritoService
+  ) {}
 
-  /** signal con el usuario o null */
-  usuarioLogueado = this.auth.usuario;
-
-  /** efecto solo para debug */
-  private usuarioEffect = effect(() => {
-    console.log('Usuario:', this.usuarioLogueado());
-  });
-
-  /** cierra sesión y redirige al home */
-  logout(): void {
-    this.auth.logout();
-    this.router.navigate(['/']);
-  }
-
-  /** abre el carrito */
   ngOnInit(): void {
-  // Suscribirse al carrito
-  this.carritoService.carrito$.subscribe((carrito: Carrito | null) => {
-    this.carrito = carrito;
-    this.cantidadTotal = carrito ? carrito.cantidadTotal : 0;
-  });
+    this.carritoService.carrito$.subscribe((carrito) => {
+      this.carrito = carrito;
+      this.loading = false;
+    });
+
+    // Cargar carrito si no está cargado
+    if (!this.carrito) {
+      this.carritoService.refrescarCarrito();
+    }
   }
 
-  // Métodos del carrito
   actualizarCantidad(itemId: number, nuevaCantidad: number): void {
     if (nuevaCantidad <= 0) return;
 
     this.updating = true;
     this.carritoService.actualizarCantidad(itemId, { cantidad: nuevaCantidad }).subscribe({
-      next: () => {
+      next: (response) => {
         this.updating = false;
       },
       error: (error) => {
         this.updating = false;
-        this.visible2 = false;
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'error',
-          title: 'Error al actualizar cantidad',
-          text: error.error?.message || 'Inténtalo de nuevo más tarde.',
-          showConfirmButton: false,
-          timer: 2000,
-          width: '20em',
-          padding: '1em'
-        });
+        console.error('Error:', error);
       }
     });
   }
 
   eliminarItem(itemId: number): void {
-    this.updating = true;
-    this.carritoService.eliminarItem(itemId).subscribe({
-      next: () => {
-        this.updating = false;
-      },
-      error: (error) => {
-        this.updating = false;
-        this.visible2 = false;
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'error',
-          title: 'Error al eliminar item',
-          text: error.error?.message || 'Inténtalo de nuevo más tarde.',
-          showConfirmButton: false,
-          timer: 2000,
-          width: '20em',
-          padding: '1em'
+    Swal.fire({
+      title: 'Confirmar eliminación',
+      text: '¿Estás seguro de que quieres eliminar este producto del carrito?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.updating = true;
+        this.carritoService.eliminarItem(itemId).subscribe({
+          next: (response) => {
+            this.updating = false;
+            Swal.fire({
+              title: '¡Eliminado!',
+              text: 'Producto eliminado del carrito',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
+          },
+          error: (error) => {
+            this.updating = false;
+            Swal.fire({
+              title: 'Error',
+              text: 'Error al eliminar producto',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+            console.error('Error:', error);
+          }
         });
       }
     });
   }
 
   vaciarCarrito(): void {
-    this.visible2 = false;
     Swal.fire({
       title: 'Vaciar carrito',
       text: '¿Estás seguro de que quieres vaciar todo el carrito? Esta acción no se puede deshacer.',
@@ -120,7 +104,7 @@ export class MenuComponent {
       if (result.isConfirmed) {
         this.updating = true;
         this.carritoService.vaciarCarrito().subscribe({
-          next: () => {
+          next: (response) => {
             this.updating = false;
             Swal.fire({
               title: '¡Carrito vaciado!',
@@ -145,13 +129,7 @@ export class MenuComponent {
     });
   }
 
-  irAlCarrito(): void {
-    this.visible2 = false;
-    this.router.navigate(['/carrito']);
-  }
-
   finalizarCompra(): void {
-    this.visible2 = false;
     Swal.fire({
       title: 'Finalizar compra',
       text: '¿Estás listo para finalizar tu compra? Se procesará el pago y se enviará tu pedido.',
@@ -187,6 +165,14 @@ export class MenuComponent {
         });
       }
     });
+  }
+
+  private mostrarMensaje(mensaje: string, esError: boolean): void {
+    this.mensaje = mensaje;
+    this.esError = esError;
+    setTimeout(() => {
+      this.mensaje = '';
+    }, 3000);
   }
 
   getImagePath(imagen: string | null | undefined): string {
