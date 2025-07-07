@@ -1,44 +1,57 @@
+<p-toast></p-toast>
+
 <div class="container">
   <h1>Crear Nuevo Producto</h1>
-  <form>
-    <div class="form-group">
-      <label for="nombre">Nombre del producto</label>
-      <input type="text" id="nombre" name="nombre" [(ngModel)]="producto.nombre" required>
+  <form (ngSubmit)="guardarProducto()" enctype="multipart/form-data">
+    <input type="text" [(ngModel)]="producto.nombre" name="nombre" placeholder="Nombre" required>
+
+    <label for="marcaId">Seleccione Marca</label>
+    <select [(ngModel)]="producto.marcaId" name="marcaId" required>
+      <option *ngFor="let m of marcas" [value]="m.id">{{ m.nombre }}</option>
+    </select>
+
+    <label for="colorId">Seleccione Color</label>
+    <select [(ngModel)]="producto.colorId" name="colorId" required>
+      <option *ngFor="let c of colores" [value]="c.id">{{ c.nombre }}</option>
+    </select>
+
+    <label for="sexo">Seleccione sexo</label>
+    <select [(ngModel)]="producto.sexo" name="sexo" required>
+      <option value="hombre">Hombre</option>
+      <option value="mujer">Mujer</option>
+      <option value="niño">Niño</option>
+    </select>
+
+    <label for="precio">Establecer precio</label>
+    <input type="number" [(ngModel)]="producto.precio" name="precio" placeholder="Precio" required>
+
+    <input type="file" (change)="onFileSelected($event)" accept="image/*" required>
+    <textarea [(ngModel)]="producto.descripcion" name="descripcion" placeholder="Descripción"></textarea>
+
+    <!-- stock por talle -->
+    <div>
+      <label>Stock por talle:</label>
+      <div *ngFor="let talle of talles" class="stock-talle">
+        <label>
+          <input
+            type="checkbox"
+            [checked]="selectedStocks[talle.id]?.activo"
+            (change)="toggleTalle(talle.id, getCheckboxValue($event))"
+          />
+          Talle {{ talle.numero }}
+        </label>
+        <input
+          type="number"
+          min="0"
+          [disabled]="!selectedStocks[talle.id]?.activo"
+          [(ngModel)]="selectedStocks[talle.id].cantidad"
+          name="cantidad-{{talle.id}}"
+          placeholder="Cantidad"
+          style="margin-left: 10px;"
+        />
+      </div>
     </div>
 
-    <div class="form-group">
-      <label for="marca">Marca</label>
-      <input type="text" id="marca" name="marca" [(ngModel)]="producto.marca" required>
-    </div>
-
-    <div class="form-group">
-      <label for="color">Color</label>
-      <input type="text" id="color" name="color" [(ngModel)]="producto.color" required>
-    </div>
-
-    <div class="form-group">
-      <label for="talle">Talle</label>
-      <select id="talle" name="talle" [(ngModel)]="producto.talle" required>
-        <option value="">-- Selecciona un talle --</option>
-        <option value="XS">XS</option>
-        <option value="S">S</option>
-        <option value="M">M</option>
-        <option value="L">L</option>
-        <option value="XL">XL</option>
-        <option value="XXL">XXL</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="sexo">Sexo</label>
-      <select id="sexo" name="sexo" [(ngModel)]="producto.sexo" required>
-        <option value="">-- Selecciona una opción --</option>
-        <option value="hombre">Hombre</option>
-        <option value="mujer">Mujer</option>
-        <option value="unisex">Unisex</option>
-      </select>
-    </div>
-
-    <button type="submit" (click)="guardarProducto()">Guardar Producto</button>
+    <button type="submit">Guardar Producto</button>
   </form>
 </div>

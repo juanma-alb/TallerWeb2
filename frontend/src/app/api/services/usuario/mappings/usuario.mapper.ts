@@ -9,7 +9,8 @@ export class UsuarioMapper{
             email:     usuarioRest.email,
             firstName: usuarioRest.firstName,
             lastName:  usuarioRest.lastName,
-            address:   usuarioRest.address
+            address:   usuarioRest.address,
+            role: usuarioRest.role
         }
     }
 }

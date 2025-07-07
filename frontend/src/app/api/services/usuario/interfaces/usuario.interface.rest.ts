@@ -4,5 +4,6 @@ export interface UsuarioRest {
     firstName: string;
     lastName:  string;
     address:   string;
+    role:      string;
 }
 // es el objeto que me devuelve el BACK

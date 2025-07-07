@@ -4,6 +4,7 @@ export interface Usuario {
     firstName: string;
     lastName:  string;
     address:   string;
+    role:      string;
 }
 
 // export interface SignInResponse {

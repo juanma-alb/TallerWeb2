@@ -5,6 +5,8 @@ import { zapatillaRouter } from './zapatilla/zapatilla.routes'
 import { marcaRouter } from './marca/marca.routes'
 import { talleRouter } from './talle/talle.routes'
 import { colorRouter } from './color/color.routes'
+import { stockRouter } from './stock/stock.routes'
+
 
 export class AppRoutes {
     static get routes(): Router {
@@ -15,6 +17,8 @@ export class AppRoutes {
         router.use('/api/usuario', usuarioRouter)
 
         router.use('/api/zapatilla', zapatillaRouter)
+
+        router.use('/api/stock', stockRouter)
 
         router.use('/api/marca', marcaRouter)
 

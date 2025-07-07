@@ -62,8 +62,12 @@ export class SigninComponent implements OnInit {
     this.usuarioService.iniciarSesion(this.form.value).subscribe({
       next: (res) => {
         this.authService.login(res);
-        this.router.navigate(['/']);
-
+        if(res.usuario.role === 'ADMIN'){
+            this.router.navigate(['/usuario/admin']);
+        }else{
+            this.router.navigate(['/']);
+        }
+        
         // si tiene ROL admin enviarlo a la vista de admin
       },
       error: (errorResponse) => {
