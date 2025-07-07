@@ -23,9 +23,11 @@
   </aside>
 
   <!-- Productos -->
-  <section class="products">
-    <div class="products__div" *ngFor="let zapatilla of filteredZapatillas">
-      <app-shoe [zapatilla]="zapatilla" />
-    </div>
-  </section>
+ <section class="products">
+  <div class="products__div"
+       *ngFor="let zapatilla of filteredZapatillas"
+       (click)="openDetail(zapatilla)">          <!-- 👈 -->
+    <app-shoe [zapatilla]="zapatilla" />
+  </div>
+</section>
 </main>

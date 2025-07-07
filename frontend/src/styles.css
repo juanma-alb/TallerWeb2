@@ -3,9 +3,16 @@
   --color-primario: #1C1C1E;      /* Negro carbón */
   --color-secundario: #FFFFFF;    /* Blanco */
   --color-acento: #FFD60A;        /* Amarillo neón */
-  --color-danger: #f01111;   /* Gris claro */
+  --color-danger: #f01111;
+  --pd-dialog-max: 800px;   /* Gris claro */
 }
 
+
+.pd-dialog .p-dynamicdialog {
+  width: min(90vw, var(--pd-dialog-max)) !important;
+  border-radius: 12px;
+  overflow: hidden;
+}
 /* font-family: 'Bebas Neue', sans-serif; 
   font-family: 'Open Sans', sans-serif;
 

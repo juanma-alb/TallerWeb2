@@ -24,7 +24,6 @@ const passwordRules = [
   selector: 'app-reset-password',
   standalone: true,
   imports: [
-    RouterLink,
     ReactiveFormsModule,
     InputTextModule,
     ButtonModule,

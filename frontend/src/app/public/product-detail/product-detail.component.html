@@ -1,0 +1,39 @@
+<div *ngIf="loading" class="pd-loading">Cargando…</div>
+
+<section *ngIf="!loading && zapatilla as z" class="pd-card">
+  <img class="pd-img" [src]="'/img/' + z.imagen" [alt]="z.nombre" />
+
+  <div class="pd-info">
+    <h2 class="pd-title">{{ z.nombre }}</h2>
+    <p  class="pd-brand">{{ z.marca?.nombre }}</p>
+
+    <!-- usamos método o pipe, ningún método en el template -->
+    <p class="pd-price">$ {{ formatPrice(z.precio) }}</p>
+
+    <p class="pd-desc" *ngIf="z.descripcion">{{ z.descripcion }}</p>
+
+    <h4>Talles disponibles</h4>
+<div class="pd-talles">
+  <button
+    class="pd-talle"
+    *ngFor="let s of z.stock"
+    [class.activo]="selectedStock?.id === s.id"
+    [disabled]="!s.activo || s.cantidad === 0"
+    (click)="seleccionarTalle(s)">
+    {{ s.talle?.numero }}
+  </button>
+</div>
+
+<button pButton
+        label="{{ agregando ? 'Agregando…' : 'Agregar al carrito' }}"
+        class="pd-add btn-form"
+        [disabled]="!selectedStock || agregando"
+        (click)="agregarAlCarrito()">
+</button>
+
+<button *ngIf="dialogRef" class="pd-close" (click)="cerrar()">×</button>
+
+
+<div *ngIf="errorMsg" class="pd-error">{{ errorMsg }}</div>
+
+

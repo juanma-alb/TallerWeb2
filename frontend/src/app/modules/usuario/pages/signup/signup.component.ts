@@ -25,7 +25,6 @@ const passwordRules = [
   selector: 'app-signup',
   standalone: true,
   imports: [
-    RouterLink,
     ButtonModule,
     ReactiveFormsModule,
     InputTextModule,

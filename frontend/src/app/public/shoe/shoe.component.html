@@ -1,40 +1,41 @@
-<a [routerLink]="['/productos', zapatilla.id]" class="shoe__link" routerLinkActive="active">
-  <article class="shoe">
-    <img
-      [src]="'/img/' + zapatilla.imagen"
-      alt="{{ zapatilla.nombre }}"
-      class="shoe__image"
-    />
+<article class="shoe">
 
-    <div class="shoe__talles" *ngIf="zapatilla.stock?.length">
-      <button
-        class="shoe__talle"
-        *ngFor="let item of zapatilla.stock"
-        [disabled]="!item.activo || item.cantidad === 0"
-      >
-        {{ item.talle?.numero }}
-      </button>
-    </div>
+  <img
+    [src]="'/img/' + zapatilla.imagen"
+    alt="{{ zapatilla.nombre }}"
+    class="shoe__image"
+  />
 
-    <p class="shoe__brand">
-      {{ zapatilla.marca.nombre }}
-    </p>
-
-    <p class="shoe__title">
-      {{ zapatilla.nombre }}
-    </p>
-
-    <div class="shoe__prices">
-      <span class="shoe__price">
-        ${{ zapatilla.precio.toLocaleString("es-AR") }}
-      </span>
-    </div>
-
+  <div class="shoe__talles" *ngIf="zapatilla.stock?.length">
     <button
-      class="shoe__add"
-      [disabled]="!tieneStockDisponible() || agregandoAlCarrito"
-      (click)="agregarAlCarrito($event, obtenerPrimerStockDisponible()!)">
-      {{ agregandoAlCarrito ? 'Agregando...' : 'Agregar al carrito' }}
+      class="shoe__talle"
+      *ngFor="let item of zapatilla.stock"
+      [disabled]="!item.activo || item.cantidad === 0"
+    >
+      {{ item.talle?.numero }}
     </button>
-  </article>
-</a>
+  </div>
+
+  <p class="shoe__brand">
+    {{ zapatilla.marca.nombre }}
+  </p>
+
+  <p class="shoe__title">
+    {{ zapatilla.nombre }}
+  </p>
+
+  <div class="shoe__prices">
+    <span class="shoe__price">
+      ${{ zapatilla.precio.toLocaleString("es-AR") }}
+    </span>
+  </div>
+
+  <button
+    class="shoe__add"
+    [disabled]="!tieneStockDisponible() || agregandoAlCarrito"
+    (click)="agregarAlCarrito($event, obtenerPrimerStockDisponible()!)">
+    {{ agregandoAlCarrito ? 'Agregando...' : 'Agregar al carrito' }}
+  </button>
+
+</article>
+
