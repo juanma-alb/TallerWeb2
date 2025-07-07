@@ -126,3 +126,7 @@
 .pd-close:hover{
   color: var(--color-secundario);
 }
+
+.pd-card{
+  background:transparent;
+}

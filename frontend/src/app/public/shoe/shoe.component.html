@@ -30,11 +30,9 @@
     </span>
   </div>
 
-  <button
-    class="shoe__add"
-    [disabled]="!tieneStockDisponible() || agregandoAlCarrito"
-    (click)="agregarAlCarrito($event, obtenerPrimerStockDisponible()!)">
-    {{ agregandoAlCarrito ? 'Agregando...' : 'Agregar al carrito' }}
+  <button  class="shoe__detail"
+           (click)="verDetalle($event)">
+    Ver detalles
   </button>
 
 </article>

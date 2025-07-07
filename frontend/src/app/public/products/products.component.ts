@@ -83,14 +83,23 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  openDetail(z: Zapatilla){
-    this.ref = this.dialogService.open(ProductDetailComponent, {
-      header    : z.nombre,
-      data      : { id: z.id },
-      width     : '65vw',
-      styleClass: 'p-fluid product-dialog'          
-    });
-  }
+ openDetail(z: Zapatilla) {
+  this.ref = this.dialogService.open(ProductDetailComponent, {
+    header : z.nombre,
+    data   : { id: z.id },
+    width  : '70vw',
+    modal  : true,
+
+    styleClass: 'product-dialog dark-dialog',
+
+    contentStyle: { padding: '0' },
+
+    dismissableMask: true,
+
+    ...(<any>{ autoFocus: false, focusTrap: false })
+  });
+}
+
 
   ngOnDestroy(){
     this.ref?.close();

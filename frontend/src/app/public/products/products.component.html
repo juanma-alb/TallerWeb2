@@ -26,8 +26,12 @@
  <section class="products">
   <div class="products__div"
        *ngFor="let zapatilla of filteredZapatillas"
-       (click)="openDetail(zapatilla)">          <!-- 👈 -->
-    <app-shoe [zapatilla]="zapatilla" />
+       (click)="openDetail(zapatilla)">          
+
+    <app-shoe
+      [zapatilla]="zapatilla"
+      (detalle)="openDetail($event)">           
+    </app-shoe>
+
   </div>
 </section>
-</main>

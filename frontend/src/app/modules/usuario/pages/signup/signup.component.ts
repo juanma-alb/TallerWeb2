@@ -5,14 +5,14 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
-
+import { AuthUsuarioService } from '../../../../api/services/usuario/auth-usuario.service';
 import { UsuarioService } from '../../../../api/services/usuario/usuario.service';
 import { UsuarioRegistro } from '../../interfaces/usuario.interface';
 
@@ -45,9 +45,14 @@ export class SignupComponent implements OnInit, OnDestroy {
   form!: FormGroup;
   spinner = true;
   bgImg = '/img/bg-jordan.jpg';
+  authService = inject(AuthUsuarioService);
 
   ngOnInit(): void {
-    this.spinner = false;
+    if (this.authService.token) {                       
+      this.router.navigate(['/']);
+      return;
+    }
+    this.spinner = false;  
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', passwordRules],

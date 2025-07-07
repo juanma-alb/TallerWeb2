@@ -1,4 +1,3 @@
-// src/app/public/product-detail/product-detail.component.ts
 import { Component, OnInit, inject, Optional } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule, NgIf, NgFor } from '@angular/common';
@@ -8,8 +7,6 @@ import { Stock, Zapatilla } from '../../../interfaces';
 import { ButtonModule } from 'primeng/button';
 import { CarritoService } from '../../api/services/carrito/carrito.service';
 import Swal from 'sweetalert2';
-
-/* ► extras para funcionar dentro de un DynamicDialog */
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
@@ -21,12 +18,12 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 })
 export class ProductDetailComponent implements OnInit {
 
-  /* inyectamos siempre */
+
   private route   = inject(ActivatedRoute);
   private http    = inject(HttpClient);
   private carrito = inject(CarritoService);
 
-  /* inyectables solo presentes cuando estamos dentro de un diálogo */
+
   constructor(
   @Optional() private dialogConfig: DynamicDialogConfig,
   @Optional() public  dialogRef  : DynamicDialogRef,
@@ -44,8 +41,6 @@ export class ProductDetailComponent implements OnInit {
   /* --------------------------- life-cycle --------------------------- */
   ngOnInit(): void {
 
-    /* 1) si venimos desde dialog → id en data
-       2) si venimos vía /productos/:id → id en la URL                       */
     const idFromDialog = this.dialogConfig?.data?.id as number | undefined;
     const id = idFromDialog ?? Number(this.route.snapshot.paramMap.get('id'));
 
@@ -66,7 +61,7 @@ export class ProductDetailComponent implements OnInit {
     this.selectedStock = s;
   }
 
-  /* cerrar si estamos en diálogo */
+ 
   cerrar(){ this.dialogRef?.close(); }
 
   /* ------------------ botón "Agregar al carrito" ------------------- */
@@ -84,7 +79,6 @@ export class ProductDetailComponent implements OnInit {
           toast: true, position: 'top-end', icon: 'success',
           title: 'Agregado al carrito', timer: 1200, showConfirmButton: false
         });
-        /* opcional: cerrar el modal una vez agregado */
         this.dialogRef?.close();
       },
       error: () => {

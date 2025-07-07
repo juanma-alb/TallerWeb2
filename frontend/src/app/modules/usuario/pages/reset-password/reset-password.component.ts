@@ -6,13 +6,13 @@ import {
   AbstractControl,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-
+import { AuthUsuarioService } from '../../../../api/services/usuario/auth-usuario.service';
 import { UsuarioService } from '../../../../api/services/usuario/usuario.service';
 
 const passwordRules = [
@@ -43,8 +43,15 @@ export class ResetPasswordComponent implements OnInit {
 
   form!: FormGroup;
   token!: string | null;
+ authService = inject(AuthUsuarioService);
 
   ngOnInit() {
+
+    if (this.authService.token) {                       
+      this.router.navigate(['/']);
+      return;
+    }
+
     this.token = this.route.snapshot.queryParamMap.get('token');
     if (!this.token) {
       this.msg.add({ severity: 'error', summary: 'Token inválido' });
