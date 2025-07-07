@@ -17,11 +17,12 @@ export class CarritoService {
       }
 
       // Calcular totales
-      const total = carrito.items.reduce((sum, item) => {
-        return sum + (Number(item.stock.zapatilla.precio) * item.cantidad);
-      }, 0);
+     const total = carrito.items.reduce((sum: number, item: any) => {
+     return sum + (Number(item.stock.zapatilla.precio) * item.cantidad);
+    }, 0);
 
-      const cantidadTotal = carrito.items.reduce((sum, item) => sum + item.cantidad, 0);
+
+    const cantidadTotal = carrito.items.reduce((sum: number, item: any) => sum + item.cantidad, 0);
 
       return {
         ...carrito,
@@ -82,7 +83,7 @@ export class CarritoService {
         throw new Error('Carrito no encontrado');
       }
 
-      const item = carrito.items.find(i => i.id === itemId);
+      const item = carrito.items.find((i: any) => i.id === itemId);
       if (!item) {
         throw new Error('Item no encontrado en el carrito');
       }
@@ -112,7 +113,7 @@ export class CarritoService {
         throw new Error('Carrito no encontrado');
       }
 
-      const item = carrito.items.find(i => i.id === itemId);
+    const item = carrito.items.find((i: any) => i.id === itemId);
       if (!item) {
         throw new Error('Item no encontrado en el carrito');
       }
