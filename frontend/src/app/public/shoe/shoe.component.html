@@ -1,35 +1,39 @@
-<a [routerLink]="['/productos', zapatilla.id]" class="shoe__link" routerLinkActive="active">
-  <article class="shoe">
-    <img
-      [src]="'/img/' + zapatilla.imagen"
-      alt="{{ zapatilla.nombre }}"
-      class="shoe__image"
-    />
+<article class="shoe">
 
-    <div class="shoe__talles" *ngIf="zapatilla.stock?.length">
-      <button
-        class="shoe__talle"
-        *ngFor="let item of zapatilla.stock"
-        [disabled]="!item.activo || item.cantidad === 0"
-      >
-        {{ item.talle?.numero }}
-      </button>
-    </div>
+  <img
+    [src]="'/img/' + zapatilla.imagen"
+    alt="{{ zapatilla.nombre }}"
+    class="shoe__image"
+  />
 
-    <p class="shoe__brand">
-      {{ zapatilla.marca.nombre }}
-    </p>
+  <div class="shoe__talles" *ngIf="zapatilla.stock?.length">
+    <button
+      class="shoe__talle"
+      *ngFor="let item of zapatilla.stock"
+      [disabled]="!item.activo || item.cantidad === 0"
+    >
+      {{ item.talle?.numero }}
+    </button>
+  </div>
 
-    <p class="shoe__title">
-      {{ zapatilla.nombre }}
-    </p>
+  <p class="shoe__brand">
+    {{ zapatilla.marca.nombre }}
+  </p>
 
-    <div class="shoe__prices">
-      <span class="shoe__price">
-        ${{ zapatilla.precio.toLocaleString("es-AR") }}
-      </span>
-    </div>
+  <p class="shoe__title">
+    {{ zapatilla.nombre }}
+  </p>
 
-    <button class="shoe__add">Agregar al carrito</button>
-  </article>
-</a>
+  <div class="shoe__prices">
+    <span class="shoe__price">
+      ${{ zapatilla.precio.toLocaleString("es-AR") }}
+    </span>
+  </div>
+
+  <button  class="shoe__detail"
+           (click)="verDetalle($event)">
+    Ver detalles
+  </button>
+
+</article>
+

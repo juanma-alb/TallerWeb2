@@ -27,16 +27,120 @@
           <img [src]="cart1" class="cart cart-hover" alt="">
       </a> -->
         <button (click)="visible2 = true" class="cart-btn">
-                    <img [src]="cart1" class="cart cart-hover" alt="">
-
+          <img [src]="cart1" class="cart cart-hover" alt="">
+          <span *ngIf="cantidadTotal > 0" class="cart-badge">{{ cantidadTotal }}</span>
         </button>
 
-        <p-drawer header="Tu carrito" [(visible)]="visible2" position="right">
-          <p class="drawer-paragraph">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-          et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-          </p>
+        <p-drawer [(visible)]="visible2" position="right" [style]="{ width: '400px' }">
+          <!-- Contenido del carrito -->
+          <div class="cart-content">
+            <h2 class="cart-title">Tu Carrito</h2>
+
+            <!-- Si no hay items en el carrito -->
+            <div *ngIf="!carrito || carrito.items.length === 0" class="empty-cart">
+              <p>Tu carrito está vacío</p>
+              <button
+                pButton
+                type="button"
+                label="Ver productos"
+                class="p-button-outlined"
+                (click)="visible2 = false"
+                [routerLink]="['/productos']">
+              </button>
+            </div>
+
+            <!-- Si hay items en el carrito -->
+            <div *ngIf="carrito && carrito.items.length > 0" class="cart-items">
+              <!-- Lista de items -->
+              <div *ngFor="let item of carrito.items" class="cart-item">
+                <div class="item-image">
+                  <img [src]="getImagePath(item.stock.zapatilla.imagen) || '/img/zapatilla-default.webp'"
+                       [alt]="item.stock.zapatilla.nombre">
+                </div>
+
+                <div class="item-details">
+                  <h4>{{ item.stock.zapatilla.nombre }}</h4>
+                  <p>{{ item.stock.zapatilla.marca.nombre }}</p>
+                  <p>Talle: {{ item.stock.talle.numero }}</p>
+                  <p>Color: {{ item.stock.zapatilla.color.nombre }}</p>
+                  <p class="item-price">${{ item.stock.zapatilla.precio }}</p>
+                </div>
+
+                <div class="item-actions">
+                  <div class="quantity-controls">
+                    <button
+                      pButton
+                      type="button"
+                      icon="pi pi-minus"
+                      class="p-button-sm p-button-outlined"
+                      [disabled]="updating || item.cantidad <= 1"
+                      (click)="actualizarCantidad(item.id, item.cantidad - 1)">
+                      -
+                    </button>
+
+                    <span class="quantity">{{ item.cantidad }}</span>
+
+                    <button
+                      pButton
+                      type="button"
+                      icon="pi pi-plus"
+                      class="p-button-sm p-button-outlined"
+                      [disabled]="updating"
+                      (click)="actualizarCantidad(item.id, item.cantidad + 1)">
+                    +
+                    </button>
+                  </div>
+
+                  <button
+                    pButton
+                    type="button"
+                    icon="pi pi-trash"
+                    class="p-button-sm p-button-danger p-button-outlined"
+                    [disabled]="updating"
+                    (click)="eliminarItem(item.id)">
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+
+              <!-- Total y acciones -->
+              <div class="cart-summary">
+                <div class="total-section">
+                  <p class="total-items">{{ cantidadTotal | number:'1.0-2' }} artículo(s)</p>
+                  <h3 class="total-price">Total: ${{ carrito.total | number:'1.2-2' }}</h3>
+                </div>
+
+                <div class="cart-actions">
+                  <button
+                    pButton
+                    type="button"
+                    label="Ver carrito completo"
+                    class="p-button-outlined full-width-btn"
+                    [disabled]="updating"
+                    (click)="irAlCarrito()">
+                  </button>
+
+                  <button
+                    pButton
+                    type="button"
+                    label="Finalizar compra"
+                    class="full-width-btn"
+                    [disabled]="updating"
+                    (click)="finalizarCompra()">
+                  </button>
+
+                  <button
+                    pButton
+                    type="button"
+                    label="Vaciar carrito"
+                    class="p-button-danger p-button-outlined full-width-btn"
+                    [disabled]="updating"
+                    (click)="vaciarCarrito()">
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </p-drawer>
 
       </li>
@@ -44,11 +148,11 @@
       <li class="nav-item user-name">
         {{ usuarioLogueado()?.firstName }} {{ usuarioLogueado()?.lastName }}
       </li>
-      
+
       <li class="nav-item">
       <button class="nav-link btn-logout" (click)="logout()">Cerrar sesión</button>
       </li>
-      
+
     </ng-container>
 
     <!-- Si NO hay usuario logueado -->

@@ -3,10 +3,99 @@
   --color-primario: #1C1C1E;      /* Negro carbón */
   --color-secundario: #FFFFFF;    /* Blanco */
   --color-acento: #FFD60A;        /* Amarillo neón */
-  --color-danger: #f01111;   /* Gris claro */
+  --color-danger: #f01111;
+  --pd-dialog-max: 800px;   /* Gris claro */
 }
 
-/* font-family: 'Bebas Neue', sans-serif; 
-  font-family: 'Open Sans', sans-serif;
 
-*/
+.pd-dialog .p-dynamicdialog {
+  width: min(90vw, var(--pd-dialog-max)) !important;
+  max-height: 90vh !important;   
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.dark-dialog .p-dialog-header,
+.dark-dialog .p-dialog-content{
+  background:#111;
+  color:#f8f8f8;
+}
+
+.dark-dialog .p-dialog-content {
+  background: #111;
+  color: #f8f8f8;
+  padding: 0;
+  flex: 1; 
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.pd-card {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+
+.pd-img {
+  max-height: 50vh; 
+  max-width: auto;
+  object-fit: contain;
+  width: 45% !important;
+}
+
+.pd-info {
+  flex: 1 1 280px;
+  max-height: 50vh; 
+  overflow: auto;
+  padding: 1rem 1.5rem;
+}
+
+
+
+.pd-close{
+  position:absolute;
+  top:1rem;
+  right:1rem;
+
+  width:2.2rem;
+  height:2.2rem;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  font-size:1.6rem;
+  line-height:1;
+  font-weight:700;
+  border-radius:50%;
+
+  color:#fff;
+  background:transparent;
+  border:2px solid var(--color-acento);
+  cursor:pointer;
+
+  transition:background .25s, color .25s, transform .25s;
+}
+
+.pd-close:hover{
+  background:var(--color-acento);      /* se pinta de amarillo */
+  color:var(--color-primario);         /* icono negro */
+  transform:rotate(90deg) scale(1.05);
+}
+
+.dark-dialog > .p-dialog-mask-scrollblocker {
+  position: fixed;   
+}
+

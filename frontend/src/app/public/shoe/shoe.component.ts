@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Zapatilla } from '../../../interfaces';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -10,5 +10,13 @@ import { RouterModule } from '@angular/router';
   styleUrl: './shoe.component.css',
 })
 export class ShoeComponent {
-  @Input() zapatilla!: Zapatilla;
+  @Input()  zapatilla!: Zapatilla;
+
+  @Output() detalle = new EventEmitter<Zapatilla>();
+
+  verDetalle(event: Event){
+    event.preventDefault();
+    event.stopPropagation();
+    this.detalle.emit(this.zapatilla);
+  }
 }

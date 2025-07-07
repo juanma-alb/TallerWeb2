@@ -34,19 +34,39 @@
       </div>
     </section>
 
-    <div class="categorias">
-      <div>
-        <a [routerLink]="['/']" class="cursor-pointer"><img [src]="hombre" alt=""></a>
-      </div>
 
-      <div>
-         <a [routerLink]="['/']" class="cursor-pointer"><img [src]="mujer" alt=""></a>
-      </div>
+<div class="categorias">
+  <div>
+    <a
+      [routerLink]="['/productos']"
+      [queryParams]="{ sexos: 'hombre' }"
+      class="cursor-pointer"
+    >
+      <img [src]="hombre" alt="Hombre" />
+    </a>
+  </div>
 
-      <div>        
-         <a [routerLink]="['/']" class="cursor-pointer"><img [src]="ninio" alt=""></a>
-      </div>
-    </div>
+  <div>
+    <a
+      [routerLink]="['/productos']"
+      [queryParams]="{ sexos: 'mujer' }"
+      class="cursor-pointer"
+    >
+      <img [src]="mujer" alt="Mujer" />
+    </a>
+  </div>
+
+  <div>
+    <a
+      [routerLink]="['/productos']"
+      [queryParams]="{ sexos: 'niño' }"
+      class="cursor-pointer"
+    >
+      <img [src]="ninio" alt="Niños" />
+    </a>
+  </div>
+</div>
+
 
     <div class="destacados">
       <h1>Destacados de la Semana</h1>
@@ -84,3 +104,5 @@
 
 
 </section>
+
+<app-footer />

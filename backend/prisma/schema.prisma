@@ -22,6 +22,9 @@ model Usuario {
   resetToken      String?   @unique
   resetTokenExp   DateTime?
 
+  // Relación con carrito
+  carritos        Carrito[]
+
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 }
@@ -73,6 +76,40 @@ model Stock {
 
   zapatilla    Zapatilla  @relation(fields: [zapatillaId], references: [id])
   talle        Talle      @relation(fields: [talleId], references: [id])
+  carritoItems CarritoItem[]
+}
+
+model Carrito {
+  id          Int           @id @default(autoincrement())
+  usuarioId   Int
+  estado      EstadoCarrito @default(ACTIVO)
+  
+  usuario     Usuario       @relation(fields: [usuarioId], references: [id])
+  items       CarritoItem[]
+  
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model CarritoItem {
+  id          Int       @id @default(autoincrement())
+  carritoId   Int
+  stockId     Int
+  cantidad    Int
+  
+  carrito     Carrito   @relation(fields: [carritoId], references: [id], onDelete: Cascade)
+  stock       Stock     @relation(fields: [stockId], references: [id])
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@unique([carritoId, stockId])
+}
+
+enum EstadoCarrito {
+  ACTIVO
+  FINALIZADO
+  ABANDONADO
 }
 
 enum Sexo {

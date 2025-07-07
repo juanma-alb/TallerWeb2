@@ -1,0 +1,132 @@
+/* ---------- Layout general ---------- */
+.pd-card{
+  max-width: 1050px;
+  margin: 5rem auto;
+  display: flex;
+  gap: 3rem;
+  padding: 2.5rem;
+  background: var(--color-primario);
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgb(0 0 0 / .25);
+}
+
+@media (max-width: 900px){
+  .pd-card{ flex-direction: column; align-items: center; }
+}
+
+/* ---------- Imagen ---------- */
+.pd-img{
+  width: 100%;
+  max-width: 460px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 6px 18px rgb(0 0 0 / .25);
+}
+
+/* ---------- Info ---------- */
+.pd-info{ flex: 1; }
+
+.pd-title{
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.6rem;
+  color: var(--color-acento);
+  margin: 0 0 .2rem;
+}
+
+.pd-brand{
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: .12rem;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  margin-bottom: 1.1rem;
+  color: var(--color-secundario);
+}
+
+.pd-price{
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: var(--color-acento);
+  margin-bottom: 1.5rem;
+}
+
+.pd-desc{
+  line-height: 1.5;
+  color: var(--color-secundario);
+  margin-bottom: 2rem;
+}
+
+/* ---------- Talles ---------- */
+.pd-talles{ display: flex; flex-wrap: wrap; gap: .6rem; }
+
+.pd-talle{
+  padding: .4rem .9rem;
+  background: var(--color-acento);
+  border: none;
+  border-radius: 6px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  color: var(--color-primario);
+  cursor: pointer;
+  transition: transform .25s, box-shadow .25s;
+}
+
+.pd-talle:hover:not(:disabled){
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgb(0 0 0 / .25);
+}
+
+.pd-talle:disabled{
+  background: #999;
+  cursor: not-allowed;
+}
+
+.pd-error,
+.pd-loading{
+  max-width: 680px;
+  margin: 6rem auto;
+  text-align: center;
+  color: var(--color-acento);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+}
+
+.talles{
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  color: whitesmoke;
+  margin-bottom: 1rem;
+}
+
+/* -------- talle seleccionado -------- */
+.pd-talle.activo{
+  background: var(--color-secundario);
+  color: var(--color-primario);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgb(0 0 0 / .25);
+}
+
+/* -------- botón agregar -------- */
+.pd-add{
+  margin-top: 2rem;
+  width: 100%;
+  background: var(--color-acento);
+  color: var(--color-primario);
+  font-family: 'Bebas Neue', sans-serif;
+}
+.pd-add:disabled{
+  background: #888;
+  cursor: not-allowed;
+}
+
+.pd-close{
+  position:absolute; right:1rem; top:1rem;
+  background:transparent; border:none; font-size:2rem; color:#fff;
+  cursor:pointer;
+}
+.pd-close:hover{
+  color: var(--color-secundario);
+}
+
+.pd-card{
+  background:transparent;
+}

@@ -6,18 +6,22 @@ import { Zapatilla } from '../../../interfaces';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environment/environment.development';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ProductDetailComponent }        from '../product-detail/product-detail.component'; 
+import { FooterComponent } from '../../shared/footer/footer.component';
+
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, ShoeComponent, FiltersComponent],
+  imports: [CommonModule, ShoeComponent, FiltersComponent, FooterComponent],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css',
+  providers: [DialogService],
 })
 export class ProductsComponent implements OnInit {
   zapatillas: Zapatilla[] = [];
-  filteredZapatillas: Zapatilla[] = [];
-
+  filteredZapatillas: Zapatilla[] = []; 
   searchTerm: string = '';
   minPrice: number | null = null;
   maxPrice: number | null = null;
@@ -33,13 +37,15 @@ export class ProductsComponent implements OnInit {
     sexos: [] as string[],
   };
 
+
   loading = true;
   error = '';
 
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private dialogService: DialogService 
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +60,8 @@ export class ProductsComponent implements OnInit {
       this.fetchZapatillas();
     });
   }
+
+  private ref?: DynamicDialogRef;
 
   private parseParam(value: string | null): string[] {
     return value ? value.split(',').map((v) => v.trim().toLowerCase()) : [];
@@ -75,6 +83,29 @@ export class ProductsComponent implements OnInit {
       error: (err) => console.error('Error al cargar colores', err),
     });
   }
+
+ openDetail(z: Zapatilla) {
+  this.ref = this.dialogService.open(ProductDetailComponent, {
+    header : z.nombre,
+    data   : { id: z.id },
+    width  : '70vw',
+    modal  : true,
+
+    styleClass: 'product-dialog dark-dialog',
+
+    contentStyle: { padding: '0' },
+
+    dismissableMask: true,
+
+    ...(<any>{ autoFocus: false, focusTrap: false })
+  });
+}
+
+
+  ngOnDestroy(){
+    this.ref?.close();
+  }
+
 
   private fetchZapatillas(): void {
     this.loading = true;
@@ -113,6 +144,7 @@ export class ProductsComponent implements OnInit {
     this.updateQueryParams();
     this.fetchZapatillas();
   }
+
 
   onMinPriceChange(value: number | null) {
     this.minPrice = value;

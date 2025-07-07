@@ -1,0 +1,112 @@
+<div class="carrito-container">
+  <div class="carrito-header">
+    <h1>Mi Carrito</h1>
+    <button
+      class="btn-vaciar"
+      *ngIf="carrito && carrito.items.length > 0"
+      (click)="vaciarCarrito()"
+      [disabled]="loading">
+      Vaciar Carrito
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    Cargando...
+  </div>
+
+  <div *ngIf="!loading && carrito && carrito.items.length === 0" class="carrito-vacio">
+    <h2>Tu carrito está vacío</h2>
+    <p>¡Agrega algunos productos para comenzar!</p>
+    <button [routerLink]="['/products']" class="btn-seguir-comprando">
+      Continuar Comprando
+    </button>
+  </div>
+
+  <div *ngIf="!loading && carrito && carrito.items.length > 0" class="carrito-content">
+    <div class="carrito-items">
+      <div *ngFor="let item of carrito.items" class="carrito-item">
+        <div class="item-imagen">
+          <img [src]="getImagePath(item.stock.zapatilla.imagen)"
+               [alt]="item.stock.zapatilla.nombre">
+        </div>
+
+        <div class="item-info">
+          <h3>{{ item.stock.zapatilla.nombre }}</h3>
+          <p class="item-marca">{{ item.stock.zapatilla.marca.nombre }}</p>
+          <p class="item-detalles">
+            Color: {{ item.stock.zapatilla.color.nombre }} |
+            Talle: {{ item.stock.talle.numero }}
+          </p>
+          <p class="item-precio">${{ item.stock.zapatilla.precio | number:'1.2-2' }}</p>
+        </div>
+
+        <div class="item-cantidad">
+          <div class="cantidad-controls">
+            <button
+              (click)="actualizarCantidad(item.id, item.cantidad - 1)"
+              [disabled]="item.cantidad <= 1 || updating"
+              >
+              -
+            </button>
+            <span>{{ item.cantidad }}</span>
+            <button
+              (click)="actualizarCantidad(item.id, item.cantidad + 1)"
+              [disabled]="item.cantidad >= item.stock.cantidad || updating">
+              +
+            </button>
+          </div>
+          <p class="stock-disponible">Stock: {{ item.stock.cantidad }}</p>
+        </div>
+
+        <div class="item-subtotal">
+          ${{ (item.stock.zapatilla.precio * item.cantidad) | number:'1.2-2' }}
+        </div>
+
+        <div class="item-acciones">
+          <button
+            class="btn-eliminar"
+            (click)="eliminarItem(item.id)"
+            [disabled]="updating">
+            🗑️
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="carrito-resumen">
+      <div class="resumen-content">
+        <h3>Resumen del pedido</h3>
+        <div class="resumen-linea">
+          <span>Productos ({{ carrito.cantidadTotal }})</span>
+          <span>${{ carrito.total | number:'1.2-2' }}</span>
+        </div>
+        <div class="resumen-linea envio">
+          <span>Envío</span>
+          <span>Gratis</span>
+        </div>
+        <div class="resumen-total">
+          <span>Total</span>
+          <span>${{ carrito.total | number:'1.2-2' }}</span>
+        </div>
+
+        <button
+          class="btn-finalizar"
+          (click)="finalizarCompra()"
+          [disabled]="updating || carrito.items.length === 0">
+          Finalizar Compra
+        </button>
+
+        <button
+          [routerLink]="['/products']"
+          class="btn-seguir-comprando">
+          Continuar Comprando
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="mensaje" class="mensaje" [ngClass]="{'mensaje-error': esError}">
+    {{ mensaje }}
+  </div>
+
+</div>

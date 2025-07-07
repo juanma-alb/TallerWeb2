@@ -1,9 +1,12 @@
 .main {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column; /* 👈 de row a column */
   background: var(--color-secundario);
-  min-height: 100vh;
+}
+
+.main-content {
+  display: flex;
+  justify-content: space-between;
 }
 
 .filters {

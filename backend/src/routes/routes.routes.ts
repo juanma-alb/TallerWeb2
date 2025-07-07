@@ -7,6 +7,7 @@ import { talleRouter } from './talle/talle.routes'
 import { colorRouter } from './color/color.routes'
 import { stockRouter } from './stock/stock.routes'
 
+import { carritoRouter } from './carrito/carrito.routes'
 
 export class AppRoutes {
     static get routes(): Router {
@@ -25,6 +26,8 @@ export class AppRoutes {
         router.use('/api/talle', talleRouter)
 
         router.use('/api/color', colorRouter)
+
+        router.use('/api/carrito', carritoRouter)
 
         return router
     }
