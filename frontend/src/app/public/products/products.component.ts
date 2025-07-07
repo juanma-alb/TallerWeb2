@@ -7,13 +7,14 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environment/environment.development';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ProductDetailComponent }        from '../product-detail/product-detail.component'; // ruta relativa correcta
+import { ProductDetailComponent }        from '../product-detail/product-detail.component'; 
+import { FooterComponent } from '../../shared/footer/footer.component';
 
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, ShoeComponent, FiltersComponent],
+  imports: [CommonModule, ShoeComponent, FiltersComponent, FooterComponent],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css',
   providers: [DialogService],

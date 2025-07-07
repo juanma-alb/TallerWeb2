@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, Optional } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, NgIf, NgFor } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environment/environment.development';
@@ -8,6 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { CarritoService } from '../../api/services/carrito/carrito.service';
 import Swal from 'sweetalert2';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { AuthUsuarioService } from '../../api/services/usuario/auth-usuario.service';  
 
 @Component({
   selector   : 'app-product-detail',
@@ -22,7 +23,8 @@ export class ProductDetailComponent implements OnInit {
   private route   = inject(ActivatedRoute);
   private http    = inject(HttpClient);
   private carrito = inject(CarritoService);
-
+  private authService = inject(AuthUsuarioService);
+  private router      = inject(Router);  
 
   constructor(
   @Optional() private dialogConfig: DynamicDialogConfig,
@@ -66,6 +68,26 @@ export class ProductDetailComponent implements OnInit {
 
   /* ------------------ botón "Agregar al carrito" ------------------- */
   agregarAlCarrito(){
+
+    if (!this.authService.token) {
+  this.dialogRef?.close();
+
+  setTimeout(() => {
+    Swal.fire({
+      title            : 'Iniciá sesión',
+      text             : 'Debes iniciar sesión para comprar.',
+      icon             : 'info',
+      confirmButtonText: 'Ir al login',
+      showCancelButton : true,
+      cancelButtonText : 'Cancelar'
+    }).then(r => {
+      if (r.isConfirmed) this.router.navigate(['/usuario/signin']);
+    });
+  }, 200); 
+
+  return;
+    }
+
     if (!this.selectedStock || this.agregando) return;
 
     this.agregando = true;
@@ -85,8 +107,7 @@ export class ProductDetailComponent implements OnInit {
         this.agregando = false;
         Swal.fire({
           toast: true, position: 'top-end', icon: 'error',
-          title: 'Tenés que iniciar sesión para agregar al carrito',
-          timer: 2000, showConfirmButton: false
+          title: 'Ocurrió un error', timer: 2000, showConfirmButton: false
         });
       }
     });

@@ -12,10 +12,8 @@ import { RouterModule } from '@angular/router';
 export class ShoeComponent {
   @Input()  zapatilla!: Zapatilla;
 
-  /* --- nuevo: propagamos un evento al padre --- */
   @Output() detalle = new EventEmitter<Zapatilla>();
 
-  /** clic en “Ver detalle” → aviso al padre */
   verDetalle(event: Event){
     event.preventDefault();
     event.stopPropagation();

@@ -3,12 +3,12 @@ import { RouterLink } from '@angular/router';
 import { GalleriaModule } from 'primeng/galleria';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
-
+import { FooterComponent } from '../../shared/footer/footer.component';
 
 
 @Component({
   selector: 'app-home',
-  imports: [GalleriaModule, RouterLink, CardModule, ButtonModule],
+  imports: [GalleriaModule, RouterLink, CardModule, ButtonModule, FooterComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

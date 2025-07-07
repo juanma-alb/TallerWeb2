@@ -6,10 +6,7 @@
   <div class="pd-info">
     <h2 class="pd-title">{{ z.nombre }}</h2>
     <p  class="pd-brand">{{ z.marca?.nombre }}</p>
-
-    <!-- usamos método o pipe, ningún método en el template -->
     <p class="pd-price">$ {{ formatPrice(z.precio) }}</p>
-
     <p class="pd-desc" *ngIf="z.descripcion">{{ z.descripcion }}</p>
 
     <h4>Talles disponibles</h4>
