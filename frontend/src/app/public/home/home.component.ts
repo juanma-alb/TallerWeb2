@@ -23,6 +23,12 @@ export class HomeComponent {
   descatacado1: string = '/img/destacado-1.jpg'
   descatacado2: string = '/img/destacado-2.jpg'
   descatacado3: string = '/img/destacado-3.jpg'
+  adidas: string = '/img/Adidas-Logo.png'
+  nike: string = '/img/Logo-Nike.png'
+  puma: string = '/img/Logo-Puma.png'
+  fila: string = '/img/Logo-Fila.webp'
+
+
 
   // Galería 1 (primera)
   imagesFirstGallery: any[] = [

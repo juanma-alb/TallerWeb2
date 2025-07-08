@@ -90,8 +90,8 @@
 }
 
 .pd-close:hover{
-  background:var(--color-acento);      /* se pinta de amarillo */
-  color:var(--color-primario);         /* icono negro */
+  background:var(--color-acento);     
+  color:var(--color-primario);         
   transform:rotate(90deg) scale(1.05);
 }
 

@@ -31,6 +31,8 @@ export class FiltersComponent {
   @Output() colorToggled = new EventEmitter<string>();
   @Output() sexoToggled = new EventEmitter<string>();
 
+  aside: string= '/img/Aside-filter.jpg'
+
   onSearchTermChange() {
     this.searchTermChange.emit(this.searchTerm);
   }

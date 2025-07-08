@@ -76,6 +76,32 @@
   font-family: 'Bebas Neue', sans-serif;  
   text-align: center;
 }
+#fila{
+  width: 3rem;
+  height: 2.8rem;
+}
+
+.nav-marcas{
+  display: flex;
+  justify-content:center;
+  background-color: var(--color-acento);
+  padding: .5rem;
+}
+
+
+.container-marcas{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 30%;
+}
+
+.container-marcas img{
+  width: 3rem;
+  height: 2rem;
+}
+
+
 /* .p-galleria.second-gallery {
   width: 100%;
   margin: 0 auto; 

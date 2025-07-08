@@ -1,4 +1,15 @@
 <section class="bg-home">
+
+  <div class="nav-marcas">
+    <div class="container-marcas">
+     <a [routerLink]="['/productos']" [queryParams]="{ marcas: 'adidas' }"><img [src]="adidas" alt="Logo adidas"></a>
+     <a [routerLink]="['/productos']" [queryParams]="{ marcas: 'nike' }"><img [src]="nike" alt="Logo Nike"></a>
+     <a [routerLink]="['/productos']" [queryParams]="{ marcas: 'fila' }"><img [src]="fila" alt="Logo Fila" id="fila"></a>
+      <a [routerLink]="['/productos']" [queryParams]="{ marcas: 'puma' }"><img [src]="puma" alt="Logo Puma"></a>
+    </div>
+  </div>
+
+
   <!-- Primera Galería -->
   <p-galleria
     [value]="imagesFirstGallery"
