@@ -5,7 +5,7 @@ import { CommonModule, NgIf } from '@angular/common';
 import { DrawerModule } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
 import Swal from 'sweetalert2';
-
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { AuthUsuarioService } from '../../api/services/usuario/auth-usuario.service';
 import { Carrito } from '../../../interfaces';
 import { CarritoService } from '../../api/services/carrito/carrito.service';
@@ -13,7 +13,7 @@ import { CarritoService } from '../../api/services/carrito/carrito.service';
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [RouterLink, RouterOutlet, NgIf, DrawerModule, ButtonModule, CommonModule],
+  imports: [RouterLink, RouterOutlet, NgIf, DrawerModule, ButtonModule, CommonModule,OverlayPanelModule],
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],
 })
@@ -31,10 +31,9 @@ export class MenuComponent {
   private router = inject(Router);
   private carritoService = inject(CarritoService);
 
-  /** signal con el usuario o null */
+
   usuarioLogueado = this.auth.usuario;
 
-  /** efecto solo para debug */
   private usuarioEffect = effect(() => {
     console.log('Usuario:', this.usuarioLogueado());
   });

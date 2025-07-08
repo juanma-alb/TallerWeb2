@@ -9,6 +9,8 @@ import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { Router, RouterLink } from '@angular/router';          
 import { AuthUsuarioService } from '../../../../api/services/usuario/auth-usuario.service';
+import { FooterComponent } from '../../../../shared/footer/footer.component';
+
 
 @Component({
   selector: 'app-signin',
@@ -20,7 +22,8 @@ import { AuthUsuarioService } from '../../../../api/services/usuario/auth-usuari
     SelectModule,
     ToastModule,
     NgIf,
-    ButtonModule
+    ButtonModule,
+    FooterComponent
   ],
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.css'],

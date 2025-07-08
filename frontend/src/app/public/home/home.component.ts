@@ -45,7 +45,6 @@ export class HomeComponent {
       alt: 'Zapatilla 3',
       title: 'Modelo Urbano 3'
     },
-    // Agregá más si querés
   ];
 
   responsiveOptions = [

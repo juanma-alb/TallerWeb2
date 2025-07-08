@@ -35,7 +35,7 @@
     opacity: 0;
 }
 
-.shoe__link:hover .shoe__talle {
+.shoe:hover .shoe__talle {
   opacity: 1;
 }
 

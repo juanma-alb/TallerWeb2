@@ -1,7 +1,7 @@
 .main {
   display: flex;
-  flex-direction: column; /* 👈 de row a column */
-  background: var(--color-secundario);
+  flex-direction: column; 
+  background: rgb(82, 79, 72);
 }
 
 .main-content {

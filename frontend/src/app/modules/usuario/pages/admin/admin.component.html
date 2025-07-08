@@ -1,57 +1,65 @@
 <p-toast></p-toast>
+<img [src]="bgImg" alt="fondo" class="bg-img" />
+<div class="bg-overlay"></div>
 
 <div class="container">
   <h1>Crear Nuevo Producto</h1>
-  <form (ngSubmit)="guardarProducto()" enctype="multipart/form-data">
-    <input type="text" [(ngModel)]="producto.nombre" name="nombre" placeholder="Nombre" required>
+
+  <form [formGroup]="productoForm" (ngSubmit)="guardarProducto()" enctype="multipart/form-data">
+
+    <label for="nombre">Nombre</label>
+    <input type="text" formControlName="nombre" placeholder="Nombre" />
 
     <label for="marcaId">Seleccione Marca</label>
-    <select [(ngModel)]="producto.marcaId" name="marcaId" required>
+    <select formControlName="marcaId">
+      <option value="" disabled selected>Seleccione una marca</option>
       <option *ngFor="let m of marcas" [value]="m.id">{{ m.nombre }}</option>
     </select>
 
     <label for="colorId">Seleccione Color</label>
-    <select [(ngModel)]="producto.colorId" name="colorId" required>
+    <select formControlName="colorId">
+      <option value="" disabled selected>Seleccione un color</option>
       <option *ngFor="let c of colores" [value]="c.id">{{ c.nombre }}</option>
     </select>
 
     <label for="sexo">Seleccione sexo</label>
-    <select [(ngModel)]="producto.sexo" name="sexo" required>
+    <select formControlName="sexo">
+      <option value="" disabled selected>Seleccione sexo</option>
       <option value="hombre">Hombre</option>
       <option value="mujer">Mujer</option>
       <option value="niño">Niño</option>
     </select>
 
     <label for="precio">Establecer precio</label>
-    <input type="number" [(ngModel)]="producto.precio" name="precio" placeholder="Precio" required>
+    <input type="number" formControlName="precio" placeholder="Precio" />
 
-    <input type="file" (change)="onFileSelected($event)" accept="image/*" required>
-    <textarea [(ngModel)]="producto.descripcion" name="descripcion" placeholder="Descripción"></textarea>
+    <label for="imagen">Imagen</label>
+    <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+
+    <label for="descripcion">Descripción</label>
+    <textarea formControlName="descripcion" placeholder="Descripción"></textarea>
 
     <!-- stock por talle -->
     <div>
       <label>Stock por talle:</label>
-      <div *ngFor="let talle of talles" class="stock-talle">
-        <label>
+      <div formArrayName="stock">
+        <div *ngFor="let control of stockControls; let i = index" class="stock-talle" [formGroupName]="i">
+          <label>
+            <input type="checkbox" formControlName="activo" (change)="toggleTalle(i)" />
+            Talle {{ talles[i]?.numero }}
+          </label>
           <input
-            type="checkbox"
-            [checked]="selectedStocks[talle.id]?.activo"
-            (change)="toggleTalle(talle.id, getCheckboxValue($event))"
+            type="number"
+            formControlName="cantidad"
+            min="0"
+            placeholder="Cantidad"
           />
-          Talle {{ talle.numero }}
-        </label>
-        <input
-          type="number"
-          min="0"
-          [disabled]="!selectedStocks[talle.id]?.activo"
-          [(ngModel)]="selectedStocks[talle.id].cantidad"
-          name="cantidad-{{talle.id}}"
-          placeholder="Cantidad"
-          style="margin-left: 10px;"
-        />
+        </div>
       </div>
     </div>
 
     <button type="submit">Guardar Producto</button>
   </form>
 </div>
+
+<app-footer />

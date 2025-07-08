@@ -6,200 +6,218 @@ import { environment } from '../../../../../environment/environment.development'
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { FooterComponent } from '../../../../shared/footer/footer.component';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [FormsModule, NgForOf,ToastModule],
+  imports: [FormsModule, ReactiveFormsModule, NgForOf, ToastModule, FooterComponent],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
   providers: [MessageService],
 
 })
 export class AdminComponent implements OnInit {
-  marcas: { id: number, nombre: string }[] = [];
-  talles: { id: number, numero: number }[] = [];
-  colores: { id: number, nombre: string }[] = [];
-  selectedFile: File | null = null;
+ marcas: { id: number; nombre: string }[] = [];
+  talles: { id: number; numero: number }[] = [];
+  colores: { id: number; nombre: string }[] = [];
+  bgImg = '/img/bg-jordan.jpg';
 
-  selectedStocks: {
-    [talleId: number]: { activo: boolean, cantidad: number }
-  } = {};
+  productoForm!: FormGroup;
 
-  producto = {
-    nombre: '',
-    marcaId: 0,
-    colorId: 0,
-    sexo: '',
-    precio: 0,
-    descripcion: '',
-  };
-
-constructor(private http: HttpClient, private router: Router,   
-            private messageService: MessageService ) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private messageService: MessageService,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
+    this.crearFormulario();
     this.getMarcas();
     this.getTalles();
     this.getColores();
   }
 
+  crearFormulario() {
+    this.productoForm = this.fb.group({
+      nombre: ['', [Validators.required, Validators.minLength(3)]],
+      marcaId: [null, Validators.required],
+      colorId: [null, Validators.required],
+      sexo: ['', Validators.required],
+      precio: [null, [Validators.required, Validators.min(0.01)]],
+      imagen: [null, Validators.required],
+      descripcion: [''],
+      stock: this.fb.array([]),
+    });
+  }
+
+  get stockControls() {
+    return (this.productoForm.get('stock') as FormArray).controls;
+  }
+
   getMarcas(): void {
-    this.http.get<{ id: number, nombre: string }[]>(`${environment.api_url}/marca`).subscribe({
+    this.http.get<{ id: number; nombre: string }[]>(`${environment.api_url}/marca`).subscribe({
       next: (data) => {
         this.marcas = data;
-        console.log('Marcas cargadas:', this.marcas);
       },
       error: (err) => console.error('Error al cargar marcas', err),
     });
   }
 
   getTalles(): void {
-    this.http.get<{ id: number, numero: number }[]>(`${environment.api_url}/talle`).subscribe({
+    this.http.get<{ id: number; numero: number }[]>(`${environment.api_url}/talle`).subscribe({
       next: (data) => {
         this.talles = data;
-        // Inicializar estructura para stock por talle
-        this.talles.forEach(t => {
-          this.selectedStocks[t.id] = { activo: false, cantidad: 0 };
+        // Llenar el FormArray de stock con controles por cada talle
+        const stockFA = this.productoForm.get('stock') as FormArray;
+        stockFA.clear();
+        this.talles.forEach(() => {
+          stockFA.push(
+            this.fb.group({
+              activo: [false],
+              cantidad: [{ value: 0, disabled: true }, [Validators.min(0)]],
+            })
+          );
         });
-        console.log('Talles cargados:', this.talles);
       },
       error: (err) => console.error('Error al cargar talles', err),
     });
   }
 
   getColores(): void {
-    this.http.get<{ id: number, nombre: string }[]>(`${environment.api_url}/color`).subscribe({
+    this.http.get<{ id: number; nombre: string }[]>(`${environment.api_url}/color`).subscribe({
       next: (data) => {
         this.colores = data;
-        console.log('Colores cargados:', this.colores);
       },
       error: (err) => console.error('Error al cargar colores', err),
     });
   }
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
-      if (!validTypes.includes(file.type)) {
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
       this.messageService.add({
-            severity: 'success',
-            summary: 'Se permiten extenciones .jpeg .png .webp',
-            detail: 'Se guardó el producto sin stock.',
-          });
-        return;
-      }
-      this.selectedFile = file;
+        severity: 'error',
+        summary: 'Tipo de archivo inválido',
+        detail: 'Se permiten solo .jpeg, .png y .webp',
+      });
+      this.productoForm.patchValue({ imagen: null });
+      return;
     }
+    this.productoForm.patchValue({ imagen: file });
+    this.productoForm.get('imagen')?.updateValueAndValidity();
   }
 
-  getCheckboxValue(event: Event): boolean {
-    const input = event.target as HTMLInputElement;
-    return input?.checked ?? false;
-  }
+  toggleTalle(index: number): void {
+    const control = (this.productoForm.get('stock') as FormArray).at(index);
+    const activo = control.get('activo')?.value;
 
-
-  toggleTalle(talleId: number, isChecked: boolean): void {
-    if (!this.selectedStocks[talleId]) {
-      this.selectedStocks[talleId] = { activo: false, cantidad: 0 };
+    if (activo) {
+      control.get('cantidad')?.enable();
+      control.get('cantidad')?.setValidators([Validators.required, Validators.min(0)]);
+    } else {
+      control.get('cantidad')?.disable();
+      control.get('cantidad')?.clearValidators();
+      control.get('cantidad')?.setValue(0);
     }
-    this.selectedStocks[talleId].activo = isChecked;
-    if (!isChecked) {
-      this.selectedStocks[talleId].cantidad = 0;
-    }
+    control.get('cantidad')?.updateValueAndValidity();
   }
 
   guardarProducto(): void {
-    if (!this.selectedFile) {
-    this.messageService.add({
-            severity: 'error',
-            summary: 'Debes seleccionar una imagen',
-            detail: 'Debes seleccionar una imagen.',
-          });
+    if (this.productoForm.invalid) {
+      this.productoForm.markAllAsTouched();
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Formulario inválido',
+        detail: 'Completa correctamente todos los campos obligatorios',
+      });
       return;
     }
 
     const formData = new FormData();
-    formData.append('nombre', this.producto.nombre);
-    formData.append('marcaId', this.producto.marcaId.toString());
-    formData.append('colorId', this.producto.colorId.toString());
-    formData.append('sexo', this.producto.sexo);
-    formData.append('precio', this.producto.precio.toString());
-    formData.append('descripcion', this.producto.descripcion || '');
-    formData.append('imagen', this.selectedFile);
+    const formValue = this.productoForm.value;
+
+    formData.append('nombre', formValue.nombre);
+    formData.append('marcaId', formValue.marcaId.toString());
+    formData.append('colorId', formValue.colorId.toString());
+    formData.append('sexo', formValue.sexo);
+    formData.append('precio', formValue.precio.toString());
+    formData.append('descripcion', formValue.descripcion || '');
+    formData.append('imagen', formValue.imagen);
 
     this.http.post<{ id: number }>(`${environment.api_url}/zapatilla`, formData).subscribe({
       next: (res) => {
-        console.log('Zapatilla creada:', res);
-
-        // talles activos y cantidad > 0
-        const stocksToCreate = Object.entries(this.selectedStocks)
-          .filter(([_, val]) => val.activo && val.cantidad > 0)
-          .map(([talleId, val]) => ({
-            talleId: Number(talleId),
-            cantidad: val.cantidad
-          }));
+        // filtrar talles activos y cantidad > 0
+        const stocksToCreate = this.talles
+          .map((talle, i) => ({
+            talleId: talle.id,
+            activo: formValue.stock[i].activo,
+            cantidad: formValue.stock[i].cantidad,
+          }))
+          .filter((item) => item.activo && item.cantidad > 0);
 
         if (stocksToCreate.length === 0) {
-         this.messageService.add({
+          this.messageService.add({
             severity: 'success',
             summary: 'Producto guardado',
             detail: 'Se guardó el producto sin stock.',
           });
-
           this.resetForm();
-          this.router.navigate(['/productos']); 
+          this.router.navigate(['/productos']);
           return;
         }
 
         const stockForm = new FormData();
         stockForm.append('zapatillaId', res.id.toString());
-        stocksToCreate.forEach(item => {
+        stocksToCreate.forEach((item) => {
           stockForm.append('talleId', item.talleId.toString());
           stockForm.append(`cantidad_${item.talleId}`, item.cantidad.toString());
         });
 
         this.http.post(`${environment.api_url}/stock`, stockForm).subscribe({
           next: () => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Producto guardado',
-            detail: 'Se guardó el producto sin stock.',
-          });
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Producto guardado',
+              detail: 'Se guardó el producto con stock.',
+            });
             this.resetForm();
+            this.router.navigate(['/productos']);
           },
           error: (err) => {
             console.error('Error al crear stock:', err);
             this.messageService.add({
-            severity: 'error',
-            summary: 'Producto guardado sin stock',
-            detail: 'Se guardó el producto sin stock.',
-          });
-          }
+              severity: 'error',
+              summary: 'Error al guardar stock',
+              detail: 'Se guardó el producto pero hubo un error al guardar el stock.',
+            });
+          },
         });
       },
-
       error: (err) => {
         console.error('Error al crear zapatilla:', err);
-      }
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error al guardar producto',
+          detail: 'Hubo un error al guardar el producto.',
+        });
+      },
     });
   }
 
   resetForm(): void {
-    this.producto = {
-      nombre: '',
-      marcaId: 0,
-      colorId: 0,
-      sexo: '',
-      precio: 0,
-      descripcion: ''
-    };
-    this.selectedFile = null;
-    this.talles.forEach(t => {
-      this.selectedStocks[t.id] = { activo: false, cantidad: 0 };
+    this.productoForm.reset();
+    // Reset stock formarray y deshabilitar inputs cantidad
+    const stockFA = this.productoForm.get('stock') as FormArray;
+    stockFA.controls.forEach((control) => {
+      control.get('activo')?.setValue(false);
+      control.get('cantidad')?.setValue(0);
+      control.get('cantidad')?.disable();
     });
   }
 }
