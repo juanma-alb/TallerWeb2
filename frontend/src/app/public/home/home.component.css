@@ -64,8 +64,6 @@
 .container-img-dest{
   display: flex;
   justify-content: center;
-  /* justify-content: flex-start;   */
-  /* flex-wrap: wrap; */
 }
 
 .destacados img{
@@ -78,3 +76,26 @@
   font-family: 'Bebas Neue', sans-serif;  
   text-align: center;
 }
+/* .p-galleria.second-gallery {
+  width: 100%;
+  margin: 0 auto; 
+  position: relative;
+  overflow: hidden; 
+} */
+
+/* .p-galleria .p-galleria-item img {
+  width: 50%; 
+  height: auto; 
+  object-fit: cover; 
+} */
+
+/* .p-galleria .p-galleria-thumbnail {
+  display: none; 
+} */
+
+/* .p-galleria .p-galleria-caption {
+  text-align: center;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+} */
